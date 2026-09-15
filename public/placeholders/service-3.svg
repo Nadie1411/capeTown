@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+  <defs>
+    <linearGradient id="g" gradientTransform="rotate(154)"><stop offset="0" stop-color="#1c2870"/><stop offset="1" stop-color="#0c1140"/></linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="rgba(255,255,255,.045)" stroke-width="1"/></pattern>
+    <radialGradient id="glow"><stop offset="0" stop-color="#d4a12a" stop-opacity=".22"/><stop offset="1" stop-color="#d4a12a" stop-opacity="0"/></radialGradient>
+    <radialGradient id="vig" cx=".5" cy=".5" r=".75"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".35"/></radialGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#g)"/>
+  <rect width="100%" height="100%" fill="url(#grid)"/>
+  <circle cx="1280" cy="150" r="550" fill="url(#glow)"/>
+  <rect x="260" y="180" width="900" height="520" fill="rgba(255,255,255,.045)" stroke="rgba(255,255,255,.72)" stroke-width="5"/>
+<line x1="489.60175552390746" y1="440" x2="535.6017555239075" y2="440" stroke="#0c1140" stroke-width="5"/>
+<path d="M 489.60175552390746 440 L 489.60175552390746 394 A 46 46 0 0 1 535.6017555239075 440" fill="none" stroke="rgba(255,255,255,.72)" stroke-width="1.4"/>
+<line x1="404.33970906971354" y1="180" x2="596.7926544959982" y2="180" stroke="#0c1140" stroke-width="6"/>
+<line x1="404.33970906971354" y1="178.5" x2="596.7926544959982" y2="178.5" stroke="rgba(255,255,255,.72)" stroke-width="1.4"/><line x1="404.33970906971354" y1="181.5" x2="596.7926544959982" y2="181.5" stroke="rgba(255,255,255,.72)" stroke-width="1.4"/>
+<text x="500.5661817828559" y="310" font-family="ui-monospace, Menlo, monospace" font-size="13" letter-spacing="2" fill="rgba(255,255,255,.34)" text-anchor="middle">KITCHEN</text>
+<text x="500.5661817828559" y="328" font-family="ui-monospace, Menlo, monospace" font-size="11" fill="rgba(255,255,255,.34)" text-anchor="middle">12.03 × 6.50</text>
+<line x1="741.1323635657118" y1="180" x2="741.1323635657118" y2="440" stroke="rgba(255,255,255,.72)" stroke-width="3"/>
+<line x1="952.6605347810589" y1="440" x2="998.6605347810589" y2="440" stroke="#0c1140" stroke-width="5"/>
+<path d="M 952.6605347810589 440 L 952.6605347810589 394 A 46 46 0 0 1 998.6605347810589 440" fill="none" stroke="rgba(255,255,255,.72)" stroke-width="1.4"/>
+<line x1="866.7926544959982" y1="180" x2="1034.3397090697135" y2="180" stroke="#0c1140" stroke-width="6"/>
+<line x1="866.7926544959982" y1="178.5" x2="1034.3397090697135" y2="178.5" stroke="rgba(255,255,255,.72)" stroke-width="1.4"/><line x1="866.7926544959982" y1="181.5" x2="1034.3397090697135" y2="181.5" stroke="rgba(255,255,255,.72)" stroke-width="1.4"/>
+<text x="950.5661817828559" y="310" font-family="ui-monospace, Menlo, monospace" font-size="13" letter-spacing="2" fill="rgba(255,255,255,.34)" text-anchor="middle">KITCHEN</text>
+<text x="950.5661817828559" y="328" font-family="ui-monospace, Menlo, monospace" font-size="11" fill="rgba(255,255,255,.34)" text-anchor="middle">10.47 × 6.50</text>
+<line x1="453.400713596313" y1="440" x2="499.400713596313" y2="440" stroke="#0c1140" stroke-width="5"/>
+<path d="M 453.400713596313 440 L 453.400713596313 486 A 46 46 0 0 0 499.400713596313 440" fill="none" stroke="rgba(255,255,255,.72)" stroke-width="1.4"/>
+<text x="437.1205303289832" y="570" font-family="ui-monospace, Menlo, monospace" font-size="13" letter-spacing="2" fill="rgba(255,255,255,.34)" text-anchor="middle">LIVING</text>
+<text x="437.1205303289832" y="588" font-family="ui-monospace, Menlo, monospace" font-size="11" fill="rgba(255,255,255,.34)" text-anchor="middle">8.86 × 6.50</text>
+<line x1="614.2410606579664" y1="440" x2="614.2410606579664" y2="700" stroke="rgba(255,255,255,.72)" stroke-width="3"/>
+<line x1="735.0732803226565" y1="440" x2="781.0732803226565" y2="440" stroke="#0c1140" stroke-width="5"/>
+<path d="M 735.0732803226565 440 L 735.0732803226565 486 A 46 46 0 0 0 781.0732803226565 440" fill="none" stroke="rgba(255,255,255,.72)" stroke-width="1.4"/>
+<text x="717.8756937525994" y="570" font-family="ui-monospace, Menlo, monospace" font-size="13" letter-spacing="2" fill="rgba(255,255,255,.34)" text-anchor="middle">STORE</text>
+<text x="717.8756937525994" y="588" font-family="ui-monospace, Menlo, monospace" font-size="11" fill="rgba(255,255,255,.34)" text-anchor="middle">5.18 × 6.50</text>
+<line x1="821.5103268472324" y1="440" x2="821.5103268472324" y2="700" stroke="rgba(255,255,255,.72)" stroke-width="3"/>
+<line x1="979.0075944953373" y1="440" x2="1025.0075944953373" y2="440" stroke="#0c1140" stroke-width="5"/>
+<path d="M 979.0075944953373 440 L 979.0075944953373 486 A 46 46 0 0 0 1025.0075944953373 440" fill="none" stroke="rgba(255,255,255,.72)" stroke-width="1.4"/>
+<text x="990.7551634236162" y="570" font-family="ui-monospace, Menlo, monospace" font-size="13" letter-spacing="2" fill="rgba(255,255,255,.34)" text-anchor="middle">STORE</text>
+<text x="990.7551634236162" y="588" font-family="ui-monospace, Menlo, monospace" font-size="11" fill="rgba(255,255,255,.34)" text-anchor="middle">8.46 × 6.50</text>
+<line x1="260" y1="440" x2="1160" y2="440" stroke="rgba(255,255,255,.72)" stroke-width="3"/>
+<rect x="1070" y="570" width="70" height="110" fill="none" stroke="rgba(255,255,255,.72)" stroke-width="2"/>
+<line x1="1070" y1="582" x2="1140" y2="582" stroke="rgba(255,255,255,.34)" stroke-width="1.2"/>
+<line x1="1070" y1="594" x2="1140" y2="594" stroke="rgba(255,255,255,.34)" stroke-width="1.2"/>
+<line x1="1070" y1="606" x2="1140" y2="606" stroke="rgba(255,255,255,.34)" stroke-width="1.2"/>
+<line x1="1070" y1="618" x2="1140" y2="618" stroke="rgba(255,255,255,.34)" stroke-width="1.2"/>
+<line x1="1070" y1="630" x2="1140" y2="630" stroke="rgba(255,255,255,.34)" stroke-width="1.2"/>
+<line x1="1070" y1="642" x2="1140" y2="642" stroke="rgba(255,255,255,.34)" stroke-width="1.2"/>
+<line x1="1070" y1="654" x2="1140" y2="654" stroke="rgba(255,255,255,.34)" stroke-width="1.2"/>
+<line x1="1070" y1="666" x2="1140" y2="666" stroke="rgba(255,255,255,.34)" stroke-width="1.2"/>
+<line x1="1105" y1="680" x2="1105" y2="578" stroke="rgba(255,255,255,.72)" stroke-width="1.4"/><polygon points="1100,584 1105,574 1110,584" fill="rgba(255,255,255,.72)"/>
+<g stroke="rgba(255,255,255,.34)" stroke-width="1.2" fill="none"><line x1="260" y1="748" x2="1160" y2="748"/><line x1="260" y1="740" x2="260" y2="756"/><line x1="1160" y1="740" x2="1160" y2="756"/></g>
+  <text x="710" y="738" font-family="ui-monospace, Menlo, monospace" font-size="13" fill="rgba(255,255,255,.34)" text-anchor="middle">22.50 m</text>
+<g stroke="rgba(255,255,255,.34)" stroke-width="1.2" fill="none"><line x1="204" y1="180" x2="204" y2="700"/><line x1="196" y1="180" x2="212" y2="180"/><line x1="196" y1="700" x2="212" y2="700"/></g>
+  <text x="190" y="440" font-family="ui-monospace, Menlo, monospace" font-size="13" fill="rgba(255,255,255,.34)" text-anchor="middle" transform="rotate(-90 190 440)">13.00 m</text>
+<g transform="translate(1230 220)"><circle r="22" fill="none" stroke="rgba(255,255,255,.34)" stroke-width="1.4"/><polygon points="0,-18 6,6 0,2 -6,6" fill="rgba(255,255,255,.72)"/><text y="42" font-family="ui-monospace, Menlo, monospace" font-size="12" fill="rgba(255,255,255,.34)" text-anchor="middle">N</text></g><g font-family="ui-monospace, Menlo, monospace" fill="rgba(255,255,255,.34)">
+    <rect x="1160" y="886" width="400" height="74" fill="rgba(0,0,0,.18)" stroke="rgba(255,255,255,.34)" stroke-width="1.2"/>
+    <line x1="1160" y1="912" x2="1560" y2="912" stroke="rgba(255,255,255,.34)" stroke-width="1.2"/>
+    <line x1="1460" y1="912" x2="1460" y2="960" stroke="rgba(255,255,255,.34)" stroke-width="1.2"/>
+    <text x="1172" y="904" font-size="12" letter-spacing="2">CAPE TOWN — ENGINEERING OFFICE</text>
+    <text x="1172" y="933" font-size="13" fill="rgba(255,255,255,.72)">SHEET A-103 — GROUND FLOOR PLAN</text>
+    <text x="1172" y="951" font-size="11">ISSUED FOR CONSTRUCTION</text>
+    <text x="1472" y="933" font-size="11">SCALE</text>
+    <text x="1472" y="951" font-size="13" fill="rgba(255,255,255,.72)">1:50</text>
+  </g>
+  <rect width="100%" height="100%" fill="url(#vig)"/>
+</svg>

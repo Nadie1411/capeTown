@@ -1,0 +1,106 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+/// Single-row table holding the whole site configuration as JSON
+model Setting {
+  id        String   @id @default("site")
+  data      String   @default("{}")
+  updatedAt DateTime @updatedAt
+}
+
+model Page {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  titleAr   String
+  titleEn   String
+  isHome    Boolean  @default(false)
+  published Boolean  @default(true)
+  blocks    String   @default("[]")
+  seo       String   @default("{}")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Service {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  titleAr   String
+  titleEn   String
+  summaryAr String   @default("")
+  summaryEn String   @default("")
+  bodyAr    String   @default("")
+  bodyEn    String   @default("")
+  icon      String   @default("Hammer")
+  coverUrl  String   @default("")
+  gallery   String   @default("[]")
+  order     Int      @default(0)
+  featured  Boolean  @default(true)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Project {
+  id         String   @id @default(cuid())
+  slug       String   @unique
+  titleAr    String
+  titleEn    String
+  category   String   @default("residential")
+  locationAr String   @default("")
+  locationEn String   @default("")
+  year       String   @default("")
+  client     String   @default("")
+  summaryAr  String   @default("")
+  summaryEn  String   @default("")
+  bodyAr     String   @default("")
+  bodyEn     String   @default("")
+  coverUrl   String   @default("")
+  gallery    String   @default("[]")
+  order      Int      @default(0)
+  featured   Boolean  @default(true)
+  published  Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Media {
+  id        String   @id @default(cuid())
+  kind      String   @default("image")
+  filename  String
+  url       String   @unique
+  thumbUrl  String   @default("")
+  mime      String   @default("")
+  size      Int      @default(0)
+  width     Int?
+  height    Int?
+  altAr     String   @default("")
+  altEn     String   @default("")
+  createdAt DateTime @default(now())
+}
+
+model Lead {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String
+  email     String   @default("")
+  service   String   @default("")
+  message   String   @default("")
+  locale    String   @default("ar")
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}

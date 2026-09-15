@@ -1,0 +1,10 @@
+node_modules
+.next
+storage/uploads/*
+!storage/uploads/.gitkeep
+prisma/*.db
+prisma/*.db-journal
+data
+.env
+.git
+.claude

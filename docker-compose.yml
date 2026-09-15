@@ -1,0 +1,13 @@
+services:
+  web:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file: .env
+    environment:
+      DATABASE_URL: "file:/app/data/site.db"
+      UPLOAD_DIR: "/app/storage/uploads"
+    volumes:
+      - ./data:/app/data            # SQLite database
+      - ./storage/uploads:/app/storage/uploads   # uploaded images & videos

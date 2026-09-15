@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+  <defs>
+    <linearGradient id="g" gradientTransform="rotate(186)"><stop offset="0" stop-color="#1c2870"/><stop offset="1" stop-color="#0c1140"/></linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="rgba(255,255,255,.045)" stroke-width="1"/></pattern>
+    <radialGradient id="glow"><stop offset="0" stop-color="#d4a12a" stop-opacity=".22"/><stop offset="1" stop-color="#d4a12a" stop-opacity="0"/></radialGradient>
+    <radialGradient id="vig" cx=".5" cy=".5" r=".75"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".35"/></radialGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#g)"/>
+  <rect width="100%" height="100%" fill="url(#grid)"/>
+  <circle cx="1280" cy="150" r="550" fill="url(#glow)"/>
+  <rect x="260" y="180" width="900" height="520" fill="rgba(255,255,255,.045)" stroke="rgba(255,255,255,.72)" stroke-width="5"/>
+<line x1="469.1200888753415" y1="440" x2="515.1200888753415" y2="440" stroke="#0c1140" stroke-width="5"/>
+<path d="M 469.1200888753415 440 L 469.1200888753415 394 A 46 46 0 0 1 515.1200888753415 440" fill="none" stroke="rgba(255,255,255,.72)" stroke-width="1.4"/>
+<line x1="363.6569426224847" y1="180" x2="501.86619945246423" y2="180" stroke="#0c1140" stroke-width="6"/>
+<line x1="363.6569426224847" y1="178.5" x2="501.86619945246423" y2="178.5" stroke="rgba(255,255,255,.72)" stroke-width="1.4"/><line x1="363.6569426224847" y1="181.5" x2="501.86619945246423" y2="181.5" stroke="rgba(255,255,255,.72)" stroke-width="1.4"/>
+<text x="432.7615710374745" y="310" font-family="ui-monospace, Menlo, monospace" font-size="13" letter-spacing="2" fill="rgba(255,255,255,.34)" text-anchor="middle">LIVING</text>
+<text x="432.7615710374745" y="328" font-family="ui-monospace, Menlo, monospace" font-size="11" fill="rgba(255,255,255,.34)" text-anchor="middle">8.64 × 6.50</text>
+<line x1="605.523142074949" y1="180" x2="605.523142074949" y2="440" stroke="rgba(255,255,255,.72)" stroke-width="3"/>
+<line x1="827.4623742762326" y1="440" x2="873.4623742762326" y2="440" stroke="#0c1140" stroke-width="5"/>
+<path d="M 827.4623742762326 440 L 827.4623742762326 394 A 46 46 0 0 1 873.4623742762326 440" fill="none" stroke="rgba(255,255,255,.72)" stroke-width="1.4"/>
+<line x1="720.5055490892491" y1="180" x2="873.815425108316" y2="180" stroke="#0c1140" stroke-width="6"/>
+<line x1="720.5055490892491" y1="178.5" x2="873.815425108316" y2="178.5" stroke="rgba(255,255,255,.72)" stroke-width="1.4"/><line x1="720.5055490892491" y1="181.5" x2="873.815425108316" y2="181.5" stroke="rgba(255,255,255,.72)" stroke-width="1.4"/>
+<text x="797.1604870987826" y="310" font-family="ui-monospace, Menlo, monospace" font-size="13" letter-spacing="2" fill="rgba(255,255,255,.34)" text-anchor="middle">BEDROOM</text>
+<text x="797.1604870987826" y="328" font-family="ui-monospace, Menlo, monospace" font-size="11" fill="rgba(255,255,255,.34)" text-anchor="middle">9.58 × 6.50</text>
+<line x1="988.7978321226162" y1="180" x2="988.7978321226162" y2="440" stroke="rgba(255,255,255,.72)" stroke-width="3"/>
+<line x1="1056.35718054415" y1="440" x2="1102.35718054415" y2="440" stroke="#0c1140" stroke-width="5"/>
+<path d="M 1056.35718054415 440 L 1056.35718054415 394 A 46 46 0 0 1 1102.35718054415 440" fill="none" stroke="rgba(255,255,255,.72)" stroke-width="1.4"/>
+<line x1="1040.1584824858314" y1="180" x2="1108.639349636785" y2="180" stroke="#0c1140" stroke-width="6"/>
+<line x1="1040.1584824858314" y1="178.5" x2="1108.639349636785" y2="178.5" stroke="rgba(255,255,255,.72)" stroke-width="1.4"/><line x1="1040.1584824858314" y1="181.5" x2="1108.639349636785" y2="181.5" stroke="rgba(255,255,255,.72)" stroke-width="1.4"/>
+<text x="1074.3989160613082" y="310" font-family="ui-monospace, Menlo, monospace" font-size="13" letter-spacing="2" fill="rgba(255,255,255,.34)" text-anchor="middle">OFFICE</text>
+<text x="1074.3989160613082" y="328" font-family="ui-monospace, Menlo, monospace" font-size="11" fill="rgba(255,255,255,.34)" text-anchor="middle">4.28 × 6.50</text>
+<line x1="434.76700830860966" y1="440" x2="480.76700830860966" y2="440" stroke="#0c1140" stroke-width="5"/>
+<path d="M 434.76700830860966 440 L 434.76700830860966 486 A 46 46 0 0 0 480.76700830860966 440" fill="none" stroke="rgba(255,255,255,.72)" stroke-width="1.4"/>
+<text x="412.55209432218885" y="570" font-family="ui-monospace, Menlo, monospace" font-size="13" letter-spacing="2" fill="rgba(255,255,255,.34)" text-anchor="middle">OFFICE</text>
+<text x="412.55209432218885" y="588" font-family="ui-monospace, Menlo, monospace" font-size="11" fill="rgba(255,255,255,.34)" text-anchor="middle">7.63 × 6.50</text>
+<line x1="565.1041886443777" y1="440" x2="565.1041886443777" y2="700" stroke="rgba(255,255,255,.72)" stroke-width="3"/>
+<line x1="780.0249523788839" y1="440" x2="826.0249523788839" y2="440" stroke="#0c1140" stroke-width="5"/>
+<path d="M 780.0249523788839 440 L 780.0249523788839 486 A 46 46 0 0 0 826.0249523788839 440" fill="none" stroke="rgba(255,255,255,.72)" stroke-width="1.4"/>
+<text x="741.6280497472255" y="570" font-family="ui-monospace, Menlo, monospace" font-size="13" letter-spacing="2" fill="rgba(255,255,255,.34)" text-anchor="middle">KITCHEN</text>
+<text x="741.6280497472255" y="588" font-family="ui-monospace, Menlo, monospace" font-size="11" fill="rgba(255,255,255,.34)" text-anchor="middle">8.83 × 6.50</text>
+<line x1="918.1519108500734" y1="440" x2="918.1519108500734" y2="700" stroke="rgba(255,255,255,.72)" stroke-width="3"/>
+<line x1="1056.2957590096833" y1="440" x2="1102.2957590096833" y2="440" stroke="#0c1140" stroke-width="5"/>
+<path d="M 1056.2957590096833 440 L 1056.2957590096833 486 A 46 46 0 0 0 1102.2957590096833 440" fill="none" stroke="rgba(255,255,255,.72)" stroke-width="1.4"/>
+<text x="1039.0759554250367" y="570" font-family="ui-monospace, Menlo, monospace" font-size="13" letter-spacing="2" fill="rgba(255,255,255,.34)" text-anchor="middle">STORE</text>
+<text x="1039.0759554250367" y="588" font-family="ui-monospace, Menlo, monospace" font-size="11" fill="rgba(255,255,255,.34)" text-anchor="middle">6.05 × 6.50</text>
+<line x1="260" y1="440" x2="1160" y2="440" stroke="rgba(255,255,255,.72)" stroke-width="3"/>
+<rect x="1070" y="570" width="70" height="110" fill="none" stroke="rgba(255,255,255,.72)" stroke-width="2"/>
+<line x1="1070" y1="582" x2="1140" y2="582" stroke="rgba(255,255,255,.34)" stroke-width="1.2"/>
+<line x1="1070" y1="594" x2="1140" y2="594" stroke="rgba(255,255,255,.34)" stroke-width="1.2"/>
+<line x1="1070" y1="606" x2="1140" y2="606" stroke="rgba(255,255,255,.34)" stroke-width="1.2"/>
+<line x1="1070" y1="618" x2="1140" y2="618" stroke="rgba(255,255,255,.34)" stroke-width="1.2"/>
+<line x1="1070" y1="630" x2="1140" y2="630" stroke="rgba(255,255,255,.34)" stroke-width="1.2"/>
+<line x1="1070" y1="642" x2="1140" y2="642" stroke="rgba(255,255,255,.34)" stroke-width="1.2"/>
+<line x1="1070" y1="654" x2="1140" y2="654" stroke="rgba(255,255,255,.34)" stroke-width="1.2"/>
+<line x1="1070" y1="666" x2="1140" y2="666" stroke="rgba(255,255,255,.34)" stroke-width="1.2"/>
+<line x1="1105" y1="680" x2="1105" y2="578" stroke="rgba(255,255,255,.72)" stroke-width="1.4"/><polygon points="1100,584 1105,574 1110,584" fill="rgba(255,255,255,.72)"/>
+<g stroke="rgba(255,255,255,.34)" stroke-width="1.2" fill="none"><line x1="260" y1="748" x2="1160" y2="748"/><line x1="260" y1="740" x2="260" y2="756"/><line x1="1160" y1="740" x2="1160" y2="756"/></g>
+  <text x="710" y="738" font-family="ui-monospace, Menlo, monospace" font-size="13" fill="rgba(255,255,255,.34)" text-anchor="middle">22.50 m</text>
+<g stroke="rgba(255,255,255,.34)" stroke-width="1.2" fill="none"><line x1="204" y1="180" x2="204" y2="700"/><line x1="196" y1="180" x2="212" y2="180"/><line x1="196" y1="700" x2="212" y2="700"/></g>
+  <text x="190" y="440" font-family="ui-monospace, Menlo, monospace" font-size="13" fill="rgba(255,255,255,.34)" text-anchor="middle" transform="rotate(-90 190 440)">13.00 m</text>
+<g transform="translate(1230 220)"><circle r="22" fill="none" stroke="rgba(255,255,255,.34)" stroke-width="1.4"/><polygon points="0,-18 6,6 0,2 -6,6" fill="rgba(255,255,255,.72)"/><text y="42" font-family="ui-monospace, Menlo, monospace" font-size="12" fill="rgba(255,255,255,.34)" text-anchor="middle">N</text></g><g font-family="ui-monospace, Menlo, monospace" fill="rgba(255,255,255,.34)">
+    <rect x="1160" y="886" width="400" height="74" fill="rgba(0,0,0,.18)" stroke="rgba(255,255,255,.34)" stroke-width="1.2"/>
+    <line x1="1160" y1="912" x2="1560" y2="912" stroke="rgba(255,255,255,.34)" stroke-width="1.2"/>
+    <line x1="1460" y1="912" x2="1460" y2="960" stroke="rgba(255,255,255,.34)" stroke-width="1.2"/>
+    <text x="1172" y="904" font-size="12" letter-spacing="2">CAPE TOWN — ENGINEERING OFFICE</text>
+    <text x="1172" y="933" font-size="13" fill="rgba(255,255,255,.72)">SHEET A-107 — GROUND FLOOR PLAN</text>
+    <text x="1172" y="951" font-size="11">ISSUED FOR CONSTRUCTION</text>
+    <text x="1472" y="933" font-size="11">SCALE</text>
+    <text x="1472" y="951" font-size="13" fill="rgba(255,255,255,.72)">1:50</text>
+  </g>
+  <rect width="100%" height="100%" fill="url(#vig)"/>
+</svg>
