@@ -2,6 +2,7 @@
 FROM node:20-bookworm-slim AS base
 WORKDIR /app
 ENV NODE_ENV=production
+RUN apt-get update && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
 
 FROM base AS deps
 COPY package.json package-lock.json ./
@@ -14,7 +15,6 @@ ENV DATABASE_URL="file:./dev.db"
 RUN npx prisma generate && npm run build
 
 FROM base AS runner
-RUN apt-get update && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/.next ./.next
 COPY --from=build /app/public ./public
