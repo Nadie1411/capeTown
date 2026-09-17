@@ -123,12 +123,17 @@ export async function seedDatabase(prisma: PrismaClient, opts: { reset?: ResetSc
   }
 
   // ---- admin user ----
+  const adminEmail = (opts.adminEmail || process.env.ADMIN_EMAIL || "admin@example.com").toLowerCase();
+  const adminPassword = opts.adminPassword || process.env.ADMIN_PASSWORD || "ChangeMe123!";
   if ((await prisma.user.count()) === 0) {
-    const email = (opts.adminEmail || process.env.ADMIN_EMAIL || "admin@example.com").toLowerCase();
-    const password = opts.adminPassword || process.env.ADMIN_PASSWORD || "ChangeMe123!";
-    await prisma.user.create({ data: { email, name: "Admin", passwordHash: await bcrypt.hash(password, 10) } });
-    result.admin = email;
-    log(`• admin user created: ${email}`);
+    await prisma.user.create({ data: { email: adminEmail, name: "Admin", passwordHash: await bcrypt.hash(adminPassword, 10) } });
+    result.admin = adminEmail;
+    log(`• admin user created: ${adminEmail}`);
+  } else if (process.env.ADMIN_FORCE_PASSWORD === "true") {
+    // ops escape hatch: set ADMIN_FORCE_PASSWORD=true in the server .env, restart, then remove it again
+    await prisma.user.upsert({ where: { email: adminEmail }, update: { passwordHash: await bcrypt.hash(adminPassword, 10) }, create: { email: adminEmail, name: "Admin", passwordHash: await bcrypt.hash(adminPassword, 10) } });
+    result.admin = adminEmail;
+    log(`• admin password reset from .env for ${adminEmail} (ADMIN_FORCE_PASSWORD) — remove the flag now`);
   }
 
   // ---- settings ----
