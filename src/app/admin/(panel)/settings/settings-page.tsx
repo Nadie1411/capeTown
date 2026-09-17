@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import type { Block, SiteSettings } from "@/lib/types";
 import { cn, uid } from "@/lib/utils";
 import { ICONS } from "@/lib/icons";
-import { Button, Card, PageHeader, Switch, api, useToast } from "@/components/admin/ui";
+import { Button, Card, PageHeader, Switch, api, useConfirm, useToast } from "@/components/admin/ui";
 import { SchemaForm } from "@/components/admin/schema-form";
 import { SETTINGS_TABS, CATEGORY_FIELDS } from "@/components/admin/settings-schema";
 import { useT, useAdminLang } from "@/components/admin/i18n";
@@ -17,6 +17,23 @@ export function SettingsPage({ initial, initialTab, previewBlocks }: { initial: 
   const adminLang = useAdminLang();
   const router = useRouter();
   const toast = useToast();
+  const { confirm, dialog } = useConfirm();
+  const [resetting, setResetting] = useState(false);
+  const resetContent = async (scope: "design" | "all") => {
+    const msg = scope === "design"
+      ? t({ en: "Replace ALL pages and site settings with the latest default design? Services, projects, media, messages and users are kept. This cannot be undone.", ar: "استبدال جميع الصفحات وإعدادات الموقع بأحدث تصميم افتراضي؟ تبقى الخدمات والمشاريع والوسائط والرسائل والمستخدمون. لا يمكن التراجع." })
+      : t({ en: "Reset EVERYTHING to the demo content (pages, settings, services, projects, media list)? Messages and users are kept. This cannot be undone.", ar: "إعادة كل المحتوى إلى المحتوى التجريبي (الصفحات، الإعدادات، الخدمات، المشاريع، قائمة الوسائط)؟ تبقى الرسائل والمستخدمون. لا يمكن التراجع." });
+    if (!(await confirm(msg))) return;
+    setResetting(true);
+    try {
+      await api("/api/admin/reset", { method: "POST", json: { scope } });
+      toast(t({ en: "Default content installed — reloading…", ar: "تم تثبيت المحتوى الافتراضي — جارٍ التحديث…" }));
+      setTimeout(() => window.location.reload(), 800);
+    } catch (e: any) {
+      toast(e.message, "error");
+      setResetting(false);
+    }
+  };
   const [init] = useState<SiteSettings>(() => ensureIds(initial));
   const [settings, setSettings] = useState<SiteSettings>(init);
   const [saved, setSaved] = useState(() => JSON.stringify(init));
@@ -108,6 +125,16 @@ export function SettingsPage({ initial, initialTab, previewBlocks }: { initial: 
             ) : (
               <SchemaForm key={current.key} fields={current.fields} value={(settings as any)[current.key]} onChange={(v) => setSection(current.key, coerce(current.key, v))} ctx={formCtx} />
             )}
+            {current.key === "advanced" ? (
+              <div className="mt-8 rounded-xl border border-amber-200 bg-amber-50/60 p-4">
+                <div className="text-sm font-bold text-slate-800">{t({ en: "Default content", ar: "المحتوى الافتراضي" })}</div>
+                <p className="mt-1 text-xs text-slate-600">{t({ en: "When the developer ships a new default design, pages and settings that were never edited here update automatically on deploy. Use these buttons to force it.", ar: "عند نشر تصميم افتراضي جديد، تُحدَّث الصفحات والإعدادات التي لم تُعدَّل هنا تلقائياً. استخدم هذه الأزرار لفرض ذلك." })}</p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <Button variant="secondary" loading={resetting} onClick={() => resetContent("design")}>{t({ en: "Load latest default design (pages + settings)", ar: "تحميل أحدث تصميم افتراضي (الصفحات + الإعدادات)" })}</Button>
+                  <Button variant="danger" loading={resetting} onClick={() => resetContent("all")}>{t({ en: "Reset all demo content", ar: "إعادة كل المحتوى التجريبي" })}</Button>
+                </div>
+              </div>
+            ) : null}
           </Card>
         </div>
       </div>
@@ -130,6 +157,7 @@ export function SettingsPage({ initial, initialTab, previewBlocks }: { initial: 
           </div>
         </div>
       ) : null}
+      {dialog}
     </div>
   );
 }

@@ -39,6 +39,7 @@ async function uniqueSlug(table: "service" | "project", base: string, excludeId?
 
 export function serviceToRow(d: z.infer<typeof serviceSchema>) {
   return {
+    edited: true,
     titleAr: d.title.ar,
     titleEn: d.title.en,
     summaryAr: d.summary.ar,
@@ -56,6 +57,7 @@ export function serviceToRow(d: z.infer<typeof serviceSchema>) {
 
 export function projectToRow(d: z.infer<typeof projectSchema>) {
   return {
+    edited: true,
     titleAr: d.title.ar,
     titleEn: d.title.en,
     category: d.category,

@@ -27,7 +27,7 @@ export const PUT = handle(async (req, ctx) => {
   );
   if ("error" in parsed) return parsed.error;
   const d = parsed.data;
-  const data: any = {};
+  const data: any = { edited: true };
   if (d.slug !== undefined) {
     const slug = slugify(d.slug);
     if (!slug) return bad("Invalid slug");

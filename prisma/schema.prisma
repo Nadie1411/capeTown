@@ -30,6 +30,7 @@ model Page {
   titleEn   String
   isHome    Boolean  @default(false)
   published Boolean  @default(true)
+  edited    Boolean  @default(false)
   blocks    String   @default("[]")
   seo       String   @default("{}")
   createdAt DateTime @default(now())
@@ -51,6 +52,7 @@ model Service {
   order     Int      @default(0)
   featured  Boolean  @default(true)
   published Boolean  @default(true)
+  edited    Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -74,6 +76,7 @@ model Project {
   order      Int      @default(0)
   featured   Boolean  @default(true)
   published  Boolean  @default(true)
+  edited     Boolean  @default(false)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 }

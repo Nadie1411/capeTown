@@ -13,6 +13,7 @@ export async function getSettings(): Promise<SiteSettings> {
 
 export async function saveSettings(data: any) {
   const merged = mergeSettings(data);
+  (merged as any)._meta = { ...((data && data._meta) || {}), edited: true };
   await prisma.setting.upsert({
     where: { id: "site" },
     create: { id: "site", data: JSON.stringify(merged) },
