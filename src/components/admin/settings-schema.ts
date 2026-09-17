@@ -1,7 +1,7 @@
 import type { Field } from "@/blocks/schema";
 import type { LText, SiteSettings } from "@/lib/types";
 import { L } from "@/lib/utils";
-import { ARABIC_FONTS, LATIN_FONTS } from "@/lib/theme";
+import { ARABIC_FONTS, DISPLAY_FONTS, LATIN_FONTS, MONO_FONTS } from "@/lib/theme";
 
 export interface SettingsTab {
   key: keyof SiteSettings;
@@ -37,6 +37,8 @@ export const SETTINGS_TABS: SettingsTab[] = [
       { key: "surfaceColor", type: "color", label: L("خلفية الأقسام الفاتحة", "Light section background"), width: "half" },
       { key: "fontEn", type: "select", label: L("الخط الإنجليزي", "English font"), width: "half", options: LATIN_FONTS.map((f) => ({ value: f, label: L(f, f) })) },
       { key: "fontAr", type: "select", label: L("الخط العربي", "Arabic font"), width: "half", options: ARABIC_FONTS.map((f) => ({ value: f, label: L(f, f) })) },
+      { key: "fontDisplay", type: "select", label: L("خط العناوين الكبيرة (إنجليزي)", "Display font for large headlines (English)"), width: "half", options: DISPLAY_FONTS.map((f) => ({ value: f, label: f ? L(f, f) : L("نفس خط النص", "Same as body font") })) },
+      { key: "fontMono", type: "select", label: L("خط الأرقام والتسميات", "Mono font for numbers & labels"), width: "half", options: MONO_FONTS.map((f) => ({ value: f, label: f ? L(f, f) : L("نفس خط النص", "Same as body font") })) },
       { key: "fontScale", type: "select", label: L("حجم الخط", "Text size"), width: "half", options: [{ value: "0.95", label: L("صغير", "Small") }, { value: "1", label: L("عادي", "Normal") }, { value: "1.1", label: L("كبير (مريح لكبار السن)", "Large (easier for older readers)") }, { value: "1.2", label: L("كبير جداً", "Extra large") }] },
       { key: "headingWeight", type: "select", label: L("سُمك العناوين", "Heading weight"), width: "half", options: [{ value: "600", label: L("متوسط", "Semi-bold") }, { value: "700", label: L("عريض", "Bold") }, { value: "800", label: L("عريض جداً", "Extra bold") }] },
       { key: "radius", type: "select", label: L("استدارة الزوايا", "Corner rounding"), width: "half", options: [{ value: "none", label: L("بدون", "None") }, { value: "sm", label: L("خفيفة", "Small") }, { value: "md", label: L("متوسطة", "Medium") }, { value: "lg", label: L("كبيرة", "Large") }, { value: "xl", label: L("كبيرة جداً", "Extra large") }] },

@@ -1,4 +1,5 @@
 "use client";
+import { withBase } from "@/lib/base";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import type { PageData } from "@/lib/types";
@@ -65,7 +66,7 @@ export function PagesList({ pages }: { pages: PageData[] }) {
             {pages.map((p) => (
               <tr key={p.id} className="hover:bg-slate-50/60">
                 <td className="px-5 py-3">
-                  <a href={`/admin/pages/${p.id}`} className="font-bold text-slate-900 hover:underline">{p.title[lang] || p.title.en || p.title.ar}</a>
+                  <a href={withBase(`/admin/pages/${p.id}`)} className="font-bold text-slate-900 hover:underline">{p.title[lang] || p.title.en || p.title.ar}</a>
                   {p.isHome ? <Badge tone="blue"><Home size={11} /> {t({ en: "Home", ar: "الرئيسية" })}</Badge> : null}
                 </td>
                 <td className="px-5 py-3 text-slate-500" dir="ltr">/{p.isHome ? "" : p.slug}</td>
@@ -74,9 +75,9 @@ export function PagesList({ pages }: { pages: PageData[] }) {
                 <td className="px-5 py-3 text-slate-500">{p.updatedAt ? formatDate(p.updatedAt, lang) : ""}</td>
                 <td className="px-5 py-3">
                   <div className="flex justify-end gap-1">
-                    <a href={p.isHome ? "/" : `/${p.slug}`} target="_blank" className="a-btn a-btn-ghost a-btn-sm" title={t({ en: "Open", ar: "فتح" })}><ExternalLink size={14} /></a>
+                    <a href={withBase(p.isHome ? "/" : `/${p.slug}`)} target="_blank" className="a-btn a-btn-ghost a-btn-sm" title={t({ en: "Open", ar: "فتح" })}><ExternalLink size={14} /></a>
                     {!p.isHome ? <Button size="sm" variant="ghost" onClick={() => setHome(p)} title={t({ en: "Set as home page", ar: "تعيين كصفحة رئيسية" })}><Home size={14} /></Button> : null}
-                    <a href={`/admin/pages/${p.id}`} className="a-btn a-btn-secondary a-btn-sm"><Pencil size={14} /> {t({ en: "Edit", ar: "تعديل" })}</a>
+                    <a href={withBase(`/admin/pages/${p.id}`)} className="a-btn a-btn-secondary a-btn-sm"><Pencil size={14} /> {t({ en: "Edit", ar: "تعديل" })}</a>
                     {!p.isHome ? <Button size="sm" variant="ghost" className="!text-rose-600" onClick={() => remove(p)}><Trash2 size={14} /></Button> : null}
                   </div>
                 </td>

@@ -18,6 +18,13 @@ export interface LinkItem {
 }
 
 export type BlockType =
+  | "heroEditorial"
+  | "servicesIndex"
+  | "story"
+  | "capabilities"
+  | "portfolio"
+  | "principles"
+  | "startProject"
   | "hero"
   | "pageHeader"
   | "about"
@@ -51,6 +58,8 @@ export interface BlockBackground {
   gradientTo: string;
   gradientAngle: number;
   mediaUrl: string;
+  mobileVideoUrl: string;
+  videoOnMobile: boolean;
   posterUrl: string;
   overlayColor: string;
   overlayOpacity: number; // 0..100
@@ -61,6 +70,10 @@ export interface BlockBackground {
 
 export interface BlockStyle {
   anchor: string;
+  sideLabel: LText;
+  numbered: boolean;
+  showGrid: boolean;
+  hairline: boolean;
   theme: "light" | "dark";
   background: BlockBackground;
   textColor: string;
@@ -211,6 +224,8 @@ export interface SiteSettings {
     surfaceColor: string;
     fontEn: string;
     fontAr: string;
+    fontDisplay: string;
+    fontMono: string;
     fontScale: number;
     headingWeight: number;
     radius: "none" | "sm" | "md" | "lg" | "xl";

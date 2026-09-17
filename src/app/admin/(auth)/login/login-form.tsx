@@ -1,4 +1,5 @@
 "use client";
+import { withBase } from "@/lib/base";
 import { useState } from "react";
 import { Button, Input, api } from "@/components/admin/ui";
 import { useT, useAdminLang, setAdminLang } from "@/components/admin/i18n";
@@ -17,7 +18,7 @@ export function LoginForm({ next }: { next: string }) {
     setError("");
     try {
       await api("/api/admin/auth/login", { method: "POST", json: { email, password } });
-      window.location.href = next.startsWith("/admin") ? next : "/admin";
+      window.location.href = withBase(next.startsWith("/admin") ? next : "/admin");
     } catch (err: any) {
       setError(err.message);
       setBusy(false);
@@ -27,7 +28,7 @@ export function LoginForm({ next }: { next: string }) {
     <form onSubmit={submit} className="w-full max-w-sm rounded-2xl bg-white p-8 shadow-2xl">
       <div className="mb-6 flex flex-col items-center text-center">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/brand/logo.svg" alt="" className="mb-3 h-24 w-24" />
+        <img src={withBase("/brand/logo.svg")} alt="" className="mb-3 h-24 w-24" />
         <h1 className="text-lg font-extrabold text-slate-900">{t({ en: "Admin panel", ar: "لوحة التحكم" })}</h1>
         <p className="text-sm text-slate-500">{t({ en: "Sign in to manage the website", ar: "سجّل الدخول لإدارة الموقع" })}</p>
       </div>

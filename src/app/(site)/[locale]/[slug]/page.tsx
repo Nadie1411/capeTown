@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getPageBySlug, getRenderContext } from "@/lib/content";
 import { isLocale, lt } from "@/lib/i18n";
 import { PageRenderer } from "@/blocks/render";
+import { asset } from "@/lib/base";
 
 export const dynamic = "force-dynamic";
 
@@ -15,7 +16,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     title: lt(page.seo.title, locale) || lt(page.title, locale),
     description: lt(page.seo.description, locale) || undefined,
     robots: page.seo.noIndex ? { index: false } : undefined,
-    openGraph: page.seo.ogImageUrl ? { images: [page.seo.ogImageUrl] } : undefined,
+    openGraph: page.seo.ogImageUrl ? { images: [asset(page.seo.ogImageUrl)] } : undefined,
   };
 }
 

@@ -1,4 +1,5 @@
 "use client";
+import { asset, withBase } from "@/lib/base";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Field } from "@/blocks/schema";
@@ -84,7 +85,7 @@ export function CollectionEditor({ kind, item, categories, services, projects }:
         back={{ href: base, label: kind === "service" ? t({ en: "Services", ar: "الخدمات" }) : t({ en: "Projects", ar: "المشاريع" }) }}
         actions={
           <>
-            {publicUrl ? <a href={publicUrl} target="_blank" className="a-btn a-btn-secondary"><ExternalLink size={15} /> {t({ en: "View", ar: "عرض" })}</a> : null}
+            {publicUrl ? <a href={withBase(publicUrl)} target="_blank" className="a-btn a-btn-secondary"><ExternalLink size={15} /> {t({ en: "View", ar: "عرض" })}</a> : null}
             <Button variant="primary" onClick={save} loading={saving}><Save size={15} /> {t({ en: `Save ${name.toLowerCase()}`, ar: "حفظ" })}</Button>
           </>
         }
@@ -141,7 +142,7 @@ export function CollectionList({ kind, items, categories }: { kind: Kind; items:
               <DragHandle handle={handle} />
               <div className="flex h-14 w-20 flex-none items-center justify-center overflow-hidden rounded-lg bg-slate-100 text-[#233283]">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                {it.coverUrl ? <img src={it.coverUrl} alt="" className="h-full w-full object-cover" /> : Icon ? <Icon size={22} /> : null}
+                {it.coverUrl ? <img src={asset(it.coverUrl)} alt="" className="h-full w-full object-cover" /> : Icon ? <Icon size={22} /> : null}
               </div>
               <div className="min-w-0 flex-1">
                 <a href={`${base}/${it.id}`} className="block truncate text-sm font-bold text-slate-900 hover:underline">{it.title[lang] || it.title.en || it.title.ar}</a>

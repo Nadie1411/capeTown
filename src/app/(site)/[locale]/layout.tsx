@@ -3,11 +3,12 @@ import { notFound } from "next/navigation";
 import "@/app/globals.css";
 import { getServices, getSettings } from "@/lib/content";
 import { dirOf, isLocale, lt } from "@/lib/i18n";
-import { fontHref, siteFont, themeVars } from "@/lib/theme";
+import { fontHref, pageFonts, themeVars } from "@/lib/theme";
 import { SiteHeader } from "@/components/site/header";
 import { SiteFooter } from "@/components/site/footer";
 import { FloatingButtons } from "@/components/site/floating";
 import { RevealObserver } from "@/components/site/reveal";
+import { asset, withBase } from "@/lib/base";
 import { t } from "@/lib/i18n";
 
 export const dynamic = "force-dynamic";
@@ -22,9 +23,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     title: { default: lt(s.seo.title, locale), template: `%s | ${lt(s.brand.shortName, locale)}` },
     description: lt(s.seo.description, locale),
     keywords: lt(s.seo.keywords, locale),
-    icons: { icon: [{ url: "/favicon.ico", sizes: "any" }, { url: s.brand.faviconUrl || "/brand/mark.svg", type: "image/svg+xml" }], apple: "/apple-touch-icon.png" },
-    alternates: { languages: { en: siteUrl + "/", ar: siteUrl + "/ar" } },
-    openGraph: { type: "website", siteName: lt(s.brand.name, locale), title: lt(s.seo.title, locale), description: lt(s.seo.description, locale), images: s.brand.ogImageUrl ? [s.brand.ogImageUrl] : [], locale: locale === "ar" ? "ar_KW" : "en_US" },
+    icons: { icon: [{ url: withBase("/favicon.ico"), sizes: "any" }, { url: asset(s.brand.faviconUrl || "/brand/mark.svg"), type: "image/svg+xml" }], apple: withBase("/apple-touch-icon.png") },
+    alternates: { languages: { en: new URL(siteUrl).origin + withBase("/"), ar: new URL(siteUrl).origin + withBase("/ar") } },
+    openGraph: { type: "website", siteName: lt(s.brand.name, locale), title: lt(s.seo.title, locale), description: lt(s.seo.description, locale), images: s.brand.ogImageUrl ? [asset(s.brand.ogImageUrl)] : [], locale: locale === "ar" ? "ar_KW" : "en_US" },
   };
 }
 
@@ -39,8 +40,8 @@ export default async function SiteLayout({ children, params }: { children: React
     "@type": "GeneralContractor",
     name: lt(settings.brand.name, locale),
     url: siteUrl || undefined,
-    logo: siteUrl ? `${siteUrl}${settings.brand.logoUrl}` : undefined,
-    image: siteUrl ? `${siteUrl}${settings.brand.ogImageUrl}` : undefined,
+    logo: siteUrl ? `${new URL(siteUrl).origin}${asset(settings.brand.logoUrl)}` : undefined,
+    image: siteUrl ? `${new URL(siteUrl).origin}${asset(settings.brand.ogImageUrl)}` : undefined,
     telephone: settings.contact.phones[0]?.number,
     email: settings.contact.email || undefined,
     address: { "@type": "PostalAddress", streetAddress: lt(settings.contact.address, locale), addressCountry: "KW" },
@@ -52,7 +53,7 @@ export default async function SiteLayout({ children, params }: { children: React
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="stylesheet" href={fontHref(siteFont(settings, locale))} />
+        <link rel="stylesheet" href={fontHref(...pageFonts(settings, locale))} />
         <meta name="theme-color" content={settings.brand.primaryColor} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>

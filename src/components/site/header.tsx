@@ -1,31 +1,37 @@
 "use client";
+import { asset } from "@/lib/base";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import type { Locale, SiteSettings } from "@/lib/types";
 import { localePath, lt, switchLocalePath, t } from "@/lib/i18n";
 import { cn, telHref, waHref } from "@/lib/utils";
-import { Menu, Phone, X, Globe, MessageCircle, Mail, Clock } from "lucide-react";
-import { SocialLinks } from "./social-icons";
+import { Phone, X, Mail, Clock, Menu, Globe } from "lucide-react";
+import { SocialLinks, SOCIAL_ICONS } from "./social-icons";
 
 export function SiteHeader({ settings, locale }: { settings: SiteSettings; locale: Locale }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname() || "/";
   const h = settings.header;
-  const transparent = h.style === "transparent" && !scrolled;
+  const transparent = h.style === "transparent" && !scrolled && !open;
   const dark = h.style === "dark";
+  const onDark = dark || transparent;
   const phone = settings.contact.phones[0]?.number;
-  const logo = dark || transparent ? settings.brand.logoWhiteUrl || settings.brand.logoUrl : settings.brand.logoUrl;
+  const logo = onDark ? settings.brand.logoWhiteUrl || settings.brand.logoUrl : settings.brand.logoUrl;
   const otherLocale: Locale = locale === "ar" ? "en" : "ar";
   const showLang = h.showLangSwitch && settings.locales.enabled.length > 1;
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    const onScroll = () => setScrolled(window.scrollY > 16);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
   useEffect(() => setOpen(false), [pathname]);
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [open]);
 
   const isActive = (href: string) => {
     const p = localePath(locale, href);
@@ -35,85 +41,90 @@ export function SiteHeader({ settings, locale }: { settings: SiteSettings; local
   return (
     <div className={cn("z-50 w-full", h.style === "transparent" ? "fixed inset-x-0 top-0" : h.sticky && "sticky top-0", transparent && "text-white")}>
       {h.showTopBar && h.style !== "transparent" ? (
-        <div className="hidden bg-[var(--c-primary-dark)] text-[.9em] text-white md:block">
-          <div className="wrap wrap-default flex items-center justify-between gap-4 py-1.5">
-            <div className="flex items-center gap-5">
-              {phone ? <a href={telHref(phone)} className="inline-flex items-center gap-1.5 font-medium hover:underline"><Phone size={16} /><span dir="ltr">{phone}</span></a> : null}
-              {settings.contact.email ? <a href={`mailto:${settings.contact.email}`} className="inline-flex items-center gap-1.5 hover:underline"><Mail size={16} /><span dir="ltr">{settings.contact.email}</span></a> : null}
-              {lt(settings.contact.hours, locale) ? <span className="inline-flex items-center gap-1.5 opacity-90"><Clock size={16} />{lt(settings.contact.hours, locale)}</span> : null}
+        <div className={cn("hidden border-b text-[.85rem] md:block", dark ? "border-white/10 bg-[var(--c-primary-dark)] text-white" : "border-[var(--line)] bg-[var(--c-surface)] text-[var(--c-muted)]")}>
+          <div className="wrap wrap-default flex items-center justify-between gap-6 py-2">
+            <div className="flex items-center gap-6">
+              {phone ? <a href={telHref(phone)} className="inline-flex items-center gap-2 hover:text-[var(--c-primary)]"><Phone size={13} /><span dir="ltr">{phone}</span></a> : null}
+              {settings.contact.email ? <a href={`mailto:${settings.contact.email}`} className="inline-flex items-center gap-2 hover:text-[var(--c-primary)]"><Mail size={13} /><span dir="ltr">{settings.contact.email}</span></a> : null}
+              {lt(settings.contact.hours, locale) ? <span className="inline-flex items-center gap-2"><Clock size={13} />{lt(settings.contact.hours, locale)}</span> : null}
             </div>
-            <div className="flex items-center gap-4">
-              {lt(h.topBarText, locale) ? <span className="text-[var(--c-accent)]">{lt(h.topBarText, locale)}</span> : null}
-              <SocialLinks social={settings.contact.social} className="gap-1" itemClassName="!h-8 !w-8 !bg-white/10 !text-white [&_svg]:h-4 [&_svg]:w-4" />
-            </div>
+            {lt(h.topBarText, locale) ? <span className="text-[var(--c-accent)]">{lt(h.topBarText, locale)}</span> : null}
           </div>
         </div>
       ) : null}
 
-      <header className={cn("transition-colors", transparent ? "bg-transparent" : dark ? "header-dark" : "header-solid")}>
-        <div className="wrap wrap-default flex items-center justify-between gap-4 py-2.5">
+      <header className={cn("transition-colors duration-300", transparent ? "bg-transparent" : dark ? "header-dark" : "header-solid")}>
+        <div className="wrap wrap-default flex items-center justify-between gap-6 py-3">
           <a href={localePath(locale, "/")} className="flex items-center gap-3" aria-label={lt(settings.brand.name, locale)}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={logo} alt={lt(settings.brand.name, locale)} style={{ "--logo-h": `${h.logoHeight || 60}px` } as any} className="h-12 w-auto md:h-[var(--logo-h)]" />
-            {h.showBrandName ? <span className="hidden max-w-[14rem] text-[.95em] font-extrabold leading-tight xl:block">{lt(settings.brand.shortName, locale)}</span> : null}
+            <img src={asset(logo)} alt={lt(settings.brand.name, locale)} style={{ "--logo-h": `${h.logoHeight || 56}px` } as any} className="h-11 w-auto md:h-[var(--logo-h)]" />
+            {h.showBrandName ? <span className="hidden max-w-[12rem] text-[.92rem] font-semibold leading-tight xl:block">{lt(settings.brand.shortName, locale)}</span> : null}
           </a>
 
-          <nav className="hidden items-center gap-6 lg:flex" aria-label="main">
+          <nav className="hidden items-center gap-7 lg:flex" aria-label="main">
             {h.nav.map((item, i) => (
-              <a key={i} href={localePath(locale, item.href)} target={item.newTab ? "_blank" : undefined} className="nav-link text-[1.02em]" aria-current={isActive(item.href) ? "page" : undefined}>
+              <a key={i} href={localePath(locale, item.href)} target={item.newTab ? "_blank" : undefined} className="nav-link text-[.97em]" aria-current={isActive(item.href) ? "page" : undefined}>
                 {lt(item.label, locale)}
               </a>
             ))}
           </nav>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3 sm:gap-4">
             {h.showPhone && phone ? (
-              <a href={telHref(phone)} className={cn("hidden items-center gap-2 rounded-[var(--btn-radius)] border px-3 py-2 font-medium md:inline-flex", dark || transparent ? "border-white/40 text-white" : "border-[var(--c-primary)]/20 text-[var(--c-primary)]")}>
-                <Phone size={20} className="text-[var(--c-accent)]" />
+              <a href={telHref(phone)} className="hidden items-center gap-2 text-[.95em] font-semibold hover:text-[var(--c-primary)] md:inline-flex">
+                <Phone size={16} className="text-[var(--c-accent)]" />
                 <span dir="ltr">{phone}</span>
               </a>
             ) : null}
             {h.showCta ? (
-              <a href={localePath(locale, h.ctaHref || "/contact")} className={cn("btn btn-sm hidden md:inline-flex", dark || transparent ? "btn-secondary" : "btn-primary", settings.brand.buttonStyle === "pill" && "btn-pill")}>
+              <a href={localePath(locale, h.ctaHref || "/contact")} className={cn("btn btn-sm hidden md:inline-flex", onDark ? "btn-primary" : "btn-primary", settings.brand.buttonStyle === "pill" && "btn-pill", settings.brand.buttonStyle === "square" && "btn-square")}>
                 {lt(h.ctaLabel, locale)}
               </a>
             ) : null}
             {showLang ? (
-              <a href={switchLocalePath(pathname, otherLocale)} className={cn("inline-flex items-center gap-1.5 rounded-[var(--btn-radius)] px-2.5 py-2 text-[.95em] font-medium", dark || transparent ? "hover:bg-white/10" : "hover:bg-black/5")} lang={otherLocale} dir={otherLocale === "ar" ? "rtl" : "ltr"} aria-label={t(locale, "language")}>
-                <Globe size={20} /> {t(locale, "language")}
+              <a href={switchLocalePath(pathname, otherLocale)} className="inline-flex items-center gap-1.5 text-[.95em] font-semibold hover:text-[var(--c-primary)]" lang={otherLocale} dir={otherLocale === "ar" ? "rtl" : "ltr"} aria-label={t(locale, "language")}>
+                <Globe size={17} className="opacity-70" /> {t(locale, "language")}
               </a>
             ) : null}
-            <button className={cn("rounded-[var(--btn-radius)] p-2.5 lg:hidden", dark || transparent ? "hover:bg-white/10" : "hover:bg-black/5")} onClick={() => setOpen(true)} aria-label={t(locale, "menu")} aria-expanded={open}>
-              <Menu size={28} />
+            <button className="-me-2 inline-flex h-11 w-11 items-center justify-center rounded-lg lg:hidden" onClick={() => setOpen(true)} aria-label={t(locale, "menu")} aria-expanded={open}>
+              <Menu size={26} />
             </button>
           </div>
         </div>
       </header>
 
-      {/* mobile drawer */}
-      <div className={cn("fixed inset-0 z-[60] lg:hidden", open ? "pointer-events-auto" : "pointer-events-none")} aria-hidden={!open}>
-        <div className={cn("absolute inset-0 bg-black/50 transition-opacity", open ? "opacity-100" : "opacity-0")} onClick={() => setOpen(false)} />
-        <div className={cn("absolute inset-y-0 end-0 flex w-[min(22rem,88vw)] flex-col bg-white text-[var(--c-text)] shadow-2xl transition-transform duration-300", open ? "translate-x-0" : "rtl:-translate-x-full ltr:translate-x-full")}>
-          <div className="flex items-center justify-between border-b border-black/10 px-4 py-3">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={settings.brand.logoUrl} alt="" className="h-12 w-auto" />
-            <button className="rounded-lg p-2 hover:bg-black/5" onClick={() => setOpen(false)} aria-label={t(locale, "close")}><X size={28} /></button>
-          </div>
-          <nav className="flex flex-col p-3" aria-label="mobile">
+      {/* full-screen menu (mobile & tablet) */}
+      <div className={cn("fixed inset-0 z-[60] flex flex-col bg-[var(--c-text)] text-white transition-[opacity,visibility] duration-300 lg:hidden", open ? "visible opacity-100" : "invisible opacity-0")} aria-hidden={!open} role="dialog" aria-modal="true">
+        <div className="wrap wrap-default relative flex items-center justify-between py-3">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={asset(settings.brand.logoWhiteUrl || settings.brand.logoUrl)} alt="" className="h-11 w-auto" />
+          <button className="-me-2 inline-flex h-11 w-11 items-center justify-center rounded-lg" onClick={() => setOpen(false)} aria-label={t(locale, "close")}><X size={26} /></button>
+        </div>
+        <nav className="wrap wrap-default relative mt-6 flex-1 overflow-y-auto" aria-label="mobile">
+          <ol className="border-t border-white/15">
             {h.nav.map((item, i) => (
-              <a key={i} href={localePath(locale, item.href)} className={cn("rounded-xl px-4 py-3.5 text-[1.1em] font-medium", isActive(item.href) ? "bg-[var(--c-primary)]/10 text-[var(--c-primary)]" : "hover:bg-black/5")}>
-                {lt(item.label, locale)}
-              </a>
+              <li key={i} className="border-b border-white/15">
+                <a href={localePath(locale, item.href)} className={cn("flex items-center justify-between py-4 text-[1.6rem] font-semibold", isActive(item.href) ? "text-[var(--c-accent)]" : "")}>
+                  {lt(item.label, locale)}
+                  <span className="arrow text-white/40">→</span>
+                </a>
+              </li>
             ))}
             {showLang ? (
-              <a href={switchLocalePath(pathname, otherLocale)} className="mt-1 inline-flex items-center gap-2 rounded-xl px-4 py-3.5 text-[1.05em] font-medium hover:bg-black/5" lang={otherLocale}>
-                <Globe size={20} /> {t(locale, "language")}
-              </a>
+              <li className="border-b border-white/15">
+                <a href={switchLocalePath(pathname, otherLocale)} className="flex items-center gap-3 py-4 text-[1.2rem] font-semibold" lang={otherLocale}>
+                  <Globe size={20} className="opacity-60" /> {t(locale, "language")}
+                </a>
+              </li>
             ) : null}
-          </nav>
-          <div className="mt-auto grid gap-2 border-t border-black/10 p-4">
-            {phone ? <a href={telHref(phone)} className="btn btn-primary btn-lg"><Phone size={22} /><span dir="ltr">{phone}</span></a> : null}
-            {settings.contact.whatsapp ? <a href={waHref(settings.contact.whatsapp, lt(settings.contact.whatsappMessage, locale))} target="_blank" rel="noopener" className="btn btn-whatsapp btn-lg"><MessageCircle size={22} />{t(locale, "whatsapp")}</a> : null}
+          </ol>
+        </nav>
+        <div className="wrap wrap-default relative grid gap-3 pb-8 pt-4 sm:grid-cols-2">
+          {phone ? <a href={telHref(phone)} className="btn btn-lg !bg-white !text-[var(--c-text)]"><Phone size={20} /><span dir="ltr">{phone}</span></a> : null}
+          {settings.contact.whatsapp ? <a href={waHref(settings.contact.whatsapp, lt(settings.contact.whatsappMessage, locale))} target="_blank" rel="noopener" className="btn btn-whatsapp btn-lg [&_svg]:h-5 [&_svg]:w-5">{SOCIAL_ICONS.whatsapp.icon}{t(locale, "whatsapp")}</a> : null}
+          <div className="sm:col-span-2 flex items-center justify-between pt-2">
+            <span className="text-sm text-white/50">{lt(settings.brand.shortName, locale)}</span>
+            <SocialLinks social={settings.contact.social} className="gap-1" itemClassName="!h-9 !w-9 !border-white/20 !text-white [&_svg]:h-4 [&_svg]:w-4" />
           </div>
         </div>
       </div>

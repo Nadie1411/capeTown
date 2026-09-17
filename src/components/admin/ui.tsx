@@ -3,6 +3,7 @@ import { createContext, useCallback, useContext, useEffect, useRef, useState } f
 import { cn } from "@/lib/utils";
 import { X, LoaderCircle, CircleCheck, TriangleAlert, Info } from "lucide-react";
 import { useT } from "./i18n";
+import { withBase } from "@/lib/base";
 
 /* ------------------------------ buttons & inputs ------------------------------ */
 
@@ -189,7 +190,7 @@ export function useToast() {
 
 export async function api<T = any>(url: string, init?: RequestInit & { json?: any }): Promise<T> {
   const { json, ...rest } = init || {};
-  const res = await fetch(url, {
+  const res = await fetch(withBase(url), {
     ...rest,
     headers: { ...(json !== undefined ? { "Content-Type": "application/json" } : {}), ...(rest.headers || {}) },
     body: json !== undefined ? JSON.stringify(json) : rest.body,

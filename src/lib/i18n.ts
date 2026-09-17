@@ -1,6 +1,7 @@
 import type { Locale, LText } from "./types";
+import { BASE_PATH, withBase } from "./base";
 
-export const DEFAULT_LOCALE: Locale = (process.env.NEXT_PUBLIC_DEFAULT_LOCALE as Locale) === "en" ? "en" : "ar";
+export const DEFAULT_LOCALE: Locale = process.env.NEXT_PUBLIC_DEFAULT_LOCALE === "ar" ? "ar" : "en";
 
 export function isLocale(v: string | undefined): v is Locale {
   return v === "ar" || v === "en";
@@ -23,10 +24,11 @@ export function lt(v: LText | string | undefined | null, locale: Locale): string
 export function localePath(locale: Locale, path: string) {
   let p = path || "/";
   if (!p.startsWith("/")) return p; // external / mailto / tel / anchors stay untouched
+  if (BASE_PATH && (p === BASE_PATH || p.startsWith(BASE_PATH + "/"))) p = p.slice(BASE_PATH.length) || "/";
   if (p.startsWith("/en/") || p === "/en") p = p.slice(3) || "/";
   if (p.startsWith("/ar/") || p === "/ar") p = p.slice(3) || "/";
-  if (locale === DEFAULT_LOCALE) return p;
-  return `/${locale}${p === "/" ? "" : p}`;
+  const out = locale === DEFAULT_LOCALE ? p : `/${locale}${p === "/" ? "" : p}`;
+  return withBase(out);
 }
 
 /** Swap the locale of the current pathname */
@@ -87,6 +89,8 @@ const dict = {
     videoNotSupported: "المتصفح لا يدعم تشغيل الفيديو",
     yearsExp: "سنة خبرة",
     skipToContent: "الانتقال إلى المحتوى",
+    scrollHint: "مرّر للأسفل",
+    servicesCount: "خدمات",
   },
   en: {
     home: "Home",
@@ -139,6 +143,8 @@ const dict = {
     videoNotSupported: "Your browser does not support video",
     yearsExp: "years of experience",
     skipToContent: "Skip to content",
+    scrollHint: "Scroll",
+    servicesCount: "services",
   },
 } as const;
 

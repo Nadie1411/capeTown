@@ -1,4 +1,5 @@
 "use client";
+import { withBase } from "@/lib/base";
 import type { LeadData } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
 import { Card, PageHeader, Badge } from "@/components/admin/ui";
@@ -23,10 +24,10 @@ export function Dashboard({ counts, recent, checklist }: { counts: Record<string
   ];
   return (
     <>
-      <PageHeader title={t({ en: "Dashboard", ar: "لوحة التحكم" })} description={t({ en: "Everything on the website is editable from here.", ar: "كل ما في الموقع قابل للتعديل من هنا." })} actions={<a href="/" target="_blank" className="a-btn a-btn-secondary"><ExternalLink size={15} /> {t({ en: "Open website", ar: "فتح الموقع" })}</a>} />
+      <PageHeader title={t({ en: "Dashboard", ar: "لوحة التحكم" })} description={t({ en: "Everything on the website is editable from here.", ar: "كل ما في الموقع قابل للتعديل من هنا." })} actions={<a href={withBase("/")} target="_blank" className="a-btn a-btn-secondary"><ExternalLink size={15} /> {t({ en: "Open website", ar: "فتح الموقع" })}</a>} />
       <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-5">
         {tiles.map((x) => (
-          <a key={x.href} href={x.href} className="a-card flex items-center gap-3 p-4 transition hover:border-[#233283]/40 hover:shadow">
+          <a key={x.href} href={withBase(x.href)} className="a-card flex items-center gap-3 p-4 transition hover:border-[#233283]/40 hover:shadow">
             <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#233283]/10 text-[#233283]"><x.icon size={22} /></span>
             <span>
               <span className="block text-2xl font-extrabold leading-none text-slate-900" dir="ltr">{x.value}</span>
@@ -36,7 +37,7 @@ export function Dashboard({ counts, recent, checklist }: { counts: Record<string
         ))}
       </div>
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
-        <Card title={t({ en: "Latest messages", ar: "آخر الرسائل" })} className="lg:col-span-2" padded={false} actions={<a href="/admin/leads" className="text-xs font-bold text-[#233283] hover:underline">{t({ en: "All messages", ar: "كل الرسائل" })}</a>}>
+        <Card title={t({ en: "Latest messages", ar: "آخر الرسائل" })} className="lg:col-span-2" padded={false} actions={<a href={withBase("/admin/leads")} className="text-xs font-bold text-[#233283] hover:underline">{t({ en: "All messages", ar: "كل الرسائل" })}</a>}>
           {recent.length ? (
             <ul className="divide-y divide-slate-100">
               {recent.map((l) => (
@@ -59,7 +60,7 @@ export function Dashboard({ counts, recent, checklist }: { counts: Record<string
             <ul className="grid gap-2.5">
               {steps.map((s, i) => (
                 <li key={i}>
-                  <a href={s.href} className="flex items-start gap-2 text-sm hover:underline">
+                  <a href={withBase(s.href)} className="flex items-start gap-2 text-sm hover:underline">
                     {s.ok ? <CircleCheck size={18} className="mt-0.5 flex-none text-emerald-500" /> : <Circle size={18} className="mt-0.5 flex-none text-slate-300" />}
                     <span className={s.ok ? "text-slate-500" : "font-semibold text-slate-800"}>{s.label}</span>
                   </a>
@@ -69,8 +70,8 @@ export function Dashboard({ counts, recent, checklist }: { counts: Record<string
           </Card>
           <Card title={t({ en: "Quick links", ar: "روابط سريعة" })}>
             <div className="grid grid-cols-2 gap-2">
-              <a href="/admin/qr" className="a-btn a-btn-secondary justify-start"><QrCode size={16} /> {t({ en: "QR code", ar: "رمز QR" })}</a>
-              <a href="/admin/settings" className="a-btn a-btn-secondary justify-start"><Settings size={16} /> {t({ en: "Settings", ar: "الإعدادات" })}</a>
+              <a href={withBase("/admin/qr")} className="a-btn a-btn-secondary justify-start"><QrCode size={16} /> {t({ en: "QR code", ar: "رمز QR" })}</a>
+              <a href={withBase("/admin/settings")} className="a-btn a-btn-secondary justify-start"><Settings size={16} /> {t({ en: "Settings", ar: "الإعدادات" })}</a>
             </div>
           </Card>
         </div>

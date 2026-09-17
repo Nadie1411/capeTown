@@ -1,6 +1,11 @@
 import type { MetadataRoute } from "next";
+import { getSettings } from "@/lib/content";
+import { withBase } from "@/lib/base";
 
-export default function robots(): MetadataRoute.Robots {
-  const base = (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").replace(/\/$/, "");
-  return { rules: [{ userAgent: "*", allow: "/", disallow: ["/admin", "/api", "/preview"] }], sitemap: `${base}/sitemap.xml` };
+export const dynamic = "force-dynamic";
+
+export default async function robots(): Promise<MetadataRoute.Robots> {
+  const settings = await getSettings();
+  const origin = new URL(settings.seo.siteUrl || process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").origin;
+  return { rules: [{ userAgent: "*", allow: withBase("/"), disallow: [withBase("/admin"), withBase("/api"), withBase("/preview")] }], sitemap: `${origin}${withBase("/sitemap.xml")}` };
 }

@@ -4,6 +4,7 @@ import type { MediaData } from "@/lib/types";
 import { cn, formatBytes, isVideoUrl } from "@/lib/utils";
 import { Button, Input, Modal, Tabs, api, useToast, useConfirm } from "./ui";
 import { useT } from "./i18n";
+import { asset, withBase } from "@/lib/base";
 import { Upload, Trash2, Search, Link2, Film, ImageIcon, Copy, LoaderCircle } from "lucide-react";
 
 export function useMedia(kind: "image" | "video" | "any" = "any") {
@@ -71,7 +72,7 @@ export function MediaGrid({ items, selected, onSelect, onDelete, loading, compac
               <div className="flex h-full flex-col items-center justify-center gap-1 text-slate-500"><span className="text-xs font-bold">PDF</span><span className="px-2 text-[10px] line-clamp-2">{m.filename}</span></div>
             ) : (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={m.thumbUrl || m.url} alt={m.filename} className="h-full w-full object-cover" loading="lazy" />
+              <img src={asset(m.thumbUrl || m.url)} alt={m.filename} className="h-full w-full object-cover" loading="lazy" />
             )}
           </button>
           {onDelete ? (
@@ -147,7 +148,7 @@ export function MediaField({ value, onChange, accept = "any", label, compact }: 
         <div className={cn("flex flex-none items-center justify-center overflow-hidden rounded-lg bg-slate-100 text-slate-400", compact ? "h-12 w-16" : "h-16 w-24")}>
           {value ? (
             isVideoUrl(value) ? <Film size={22} /> : // eslint-disable-next-line @next/next/no-img-element
-            <img src={value} alt="" className="h-full w-full object-cover" />
+            <img src={asset(value)} alt="" className="h-full w-full object-cover" />
           ) : (
             <ImageIcon size={22} />
           )}
