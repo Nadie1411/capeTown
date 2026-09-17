@@ -1,0 +1,52 @@
+name: Deploy to production
+
+on:
+  push:
+    branches: [prod]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: capetown-prod-deploy
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+
+      # The deploy server is a small, shared VPS with ~2GB RAM. Building
+      # (npm ci + next build) directly on it once starved it of memory and
+      # took the whole box offline. Build the image here instead, where
+      # resources are plentiful, and ship the finished image to the server.
+      - name: Build image
+        run: docker build -t capetown-web:${{ github.sha }} .
+
+      - name: Save image to archive
+        run: docker save capetown-web:${{ github.sha }} | gzip > image.tar.gz
+
+      - name: Copy image to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "image.tar.gz"
+          target: "~/apps/capetown/"
+          overwrite: true
+
+      - name: Load image and restart service
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script_stop: true
+          script: |
+            cd ~/apps/capetown
+            git fetch --quiet origin prod
+            git reset --hard origin/prod
+            gunzip -f image.tar.gz
+            sudo docker load -i image.tar
+            sudo docker tag capetown-web:${{ github.sha }} capetown-web:latest
+            rm -f image.tar
+            sudo docker compose up -d
+            sudo docker image prune -af --filter "until=72h"

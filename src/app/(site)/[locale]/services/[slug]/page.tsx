@@ -1,3 +1,4 @@
+import { asset } from "@/lib/base";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getRenderContext, getServiceBySlug } from "@/lib/content";
@@ -30,16 +31,16 @@ export default async function ServicePage({ params }: { params: Promise<{ locale
   return (
     <>
       <header className="sec sec-lg text-white" data-tone="dark" style={{ background: `linear-gradient(135deg, var(--c-primary), var(--c-secondary))` }}>
-        {service.coverUrl ? <div className="sec-bg opacity-25" style={{ backgroundImage: `url("${service.coverUrl}")`, backgroundSize: "cover", backgroundPosition: "center" }} /> : null}
+        {service.coverUrl ? <div className="sec-bg opacity-25" style={{ backgroundImage: `url("${asset(service.coverUrl)}")`, backgroundSize: "cover", backgroundPosition: "center" }} /> : null}
         <div className="wrap wrap-default">
-          <nav className="mb-3 text-[.95em] text-white/75" aria-label="breadcrumb">
+          <nav className="mono mb-4 text-white/70" aria-label="breadcrumb">
             <a href={localePath(locale, "/")} className="hover:underline">{t(locale, "home")}</a><span className="mx-2">/</span>
             <a href={localePath(locale, "/services")} className="hover:underline">{t(locale, "ourServices")}</a><span className="mx-2">/</span>
             <span>{title}</span>
           </nav>
           <div className="flex items-center gap-4">
             <span className="icon-bubble !h-16 !w-16 !bg-white/15 !text-white"><Icon name={service.icon} size={34} /></span>
-            <h1 className="text-[clamp(1.9rem,1.3rem+2.4vw,3.2rem)] font-black">{title}</h1>
+            <h1 className="display display-xl">{title}</h1>
           </div>
           {lt(service.summary, locale) ? <p className="mt-4 max-w-3xl text-[1.1em] text-white/85">{lt(service.summary, locale)}</p> : null}
         </div>
@@ -50,7 +51,7 @@ export default async function ServicePage({ params }: { params: Promise<{ locale
           <article className="lg:col-span-2">
             {service.coverUrl ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={service.coverUrl} alt={title} className="mb-8 aspect-[16/9] w-full rounded-[var(--radius)] object-cover shadow-lg" />
+              <img src={asset(service.coverUrl)} alt={title} className="mb-8 aspect-[16/9] w-full rounded-[var(--radius)] object-cover shadow-lg" />
             ) : null}
             <div className="rich text-[1.08em]" dangerouslySetInnerHTML={{ __html: lt(service.body, locale) }} />
             {gallery.length ? (

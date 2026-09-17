@@ -1,4 +1,5 @@
 "use client";
+import { asset } from "@/lib/base";
 import { useCallback, useEffect, useState } from "react";
 import { cn, isVideoUrl } from "@/lib/utils";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
@@ -51,10 +52,10 @@ export function Lightbox({ items, index, onClose, onIndex }: { items: LightboxIt
       ) : null}
       <figure className="max-h-full max-w-6xl" onClick={(e) => e.stopPropagation()}>
         {isVideoUrl(item.url) ? (
-          <video src={item.url} poster={item.posterUrl} controls autoPlay className="max-h-[82vh] w-auto rounded-lg" />
+          <video src={asset(item.url)} poster={item.posterUrl ? asset(item.posterUrl) : undefined} controls autoPlay className="max-h-[82vh] w-auto rounded-lg" />
         ) : (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={item.url} alt={item.caption || ""} className="max-h-[82vh] w-auto rounded-lg object-contain" />
+          <img src={asset(item.url)} alt={item.caption || ""} className="max-h-[82vh] w-auto rounded-lg object-contain" />
         )}
         {item.caption ? <figcaption className="mt-3 text-center text-white/90">{item.caption}</figcaption> : null}
         <div className="mt-2 text-center text-sm text-white/60">{index + 1} / {items.length}</div>
@@ -74,10 +75,10 @@ export function GalleryGrid({ items, columns, aspect, lightbox }: { items: Light
           <figure key={i} className="group overflow-hidden rounded-[var(--radius)] border border-[var(--card-border)] bg-black/5">
             <button type="button" className={cn("block w-full", ratio, lightbox ? "cursor-zoom-in" : "cursor-default")} onClick={() => lightbox && setIdx(i)} aria-label={it.caption || "Open"}>
               {isVideoUrl(it.url) ? (
-                <video src={it.url} poster={it.posterUrl} muted playsInline preload="metadata" className="h-full w-full object-cover" />
+                <video src={asset(it.url)} poster={it.posterUrl ? asset(it.posterUrl) : undefined} muted playsInline preload="metadata" className="h-full w-full object-cover" />
               ) : (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={it.url} alt={it.caption || ""} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                <img src={asset(it.url)} alt={it.caption || ""} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
               )}
             </button>
             {it.caption ? <figcaption className="px-3 py-2 text-sm text-[var(--fg-muted)]">{it.caption}</figcaption> : null}

@@ -32,23 +32,17 @@ const projects = [
 ];
 
 function photoBg(url: string, opacity = 75) {
-  return { type: "image", color: "#233283", gradientFrom: "#233283", gradientTo: "#0f172a", gradientAngle: 135, mediaUrl: url, posterUrl: "", overlayColor: "#0b1244", overlayOpacity: opacity, overlayStyle: "solid", parallax: false, pattern: "grid" } as any;
+  return { type: "image", color: "#233283", gradientFrom: "#233283", gradientTo: "#0f172a", gradientAngle: 135, mediaUrl: url, mobileVideoUrl: "", videoOnMobile: false, posterUrl: "", overlayColor: "#0b1244", overlayOpacity: opacity, overlayStyle: "solid", parallax: false, pattern: "grid" } as any;
 }
 
 function homeBlocks() {
   return [
     createBlock("hero", { label: "Hero" }),
-    createBlock("services", { style: { anchor: "services" } }),
     createBlock("about", { style: { anchor: "about" } }),
-    createBlock("buildingTypes", { style: { background: { type: "color", color: "#f4f6fb" } as any } }),
-    createBlock("features", { style: { anchor: "why-us" } }),
-    createBlock("stats"),
+    createBlock("services", { style: { anchor: "services", background: { type: "color", color: "#f4f6f9" } as any } }),
     createBlock("projects", { style: { anchor: "projects" } }),
-    createBlock("steps", { style: { background: { type: "color", color: "#f4f6fb" } as any } }),
-    createBlock("testimonials"),
-    createBlock("faq", { style: { background: { type: "color", color: "#f4f6fb" } as any } }),
-    createBlock("cta"),
-    createBlock("contact", { style: { anchor: "contact" }, content: { showMap: true } }),
+    createBlock("stats", { content: { eyebrow: L("الشركة بالأرقام", "The company in numbers"), title: L("خبرة تُقاس بالمشاريع المنجزة", "Experience measured in delivered projects") } }),
+    createBlock("cta", { style: { anchor: "contact" } }),
   ];
 }
 
@@ -61,9 +55,8 @@ const pages = [
       createBlock("pageHeader", { content: { title: L("من نحن", "About us"), subtitle: L("شركة كويتية للتجارة العامة والمقاولات — خبرة، دقة، والتزام.", "A Kuwaiti general trading & contracting company — experience, precision and commitment.") }, style: { background: photoBg("/photos/kuwait-skyline.jpg", 78) } }),
       createBlock("about", { content: { eyebrow: L("قصتنا", "Our story") } }),
       createBlock("stats"),
-      createBlock("features", { content: { eyebrow: L("قيمنا", "Our values") } }),
-      createBlock("steps", { style: { background: { type: "color", color: "#f4f6fb" } as any } }),
-      createBlock("team", { content: { items: [] } }),
+      createBlock("features", { content: { eyebrow: L("قيمنا", "Our values") }, style: { background: { type: "color", color: "#f4f6f9" } as any } }),
+      createBlock("steps", { content: { eyebrow: L("كيف نعمل", "How we work"), title: L("أربع خطوات — من المعاينة إلى المفتاح", "Four steps — from site visit to keys") } }),
       createBlock("cta"),
     ],
   },
@@ -72,8 +65,8 @@ const pages = [
     title: L("خدماتنا", "Our services"),
     blocks: () => [
       createBlock("pageHeader", { content: { title: L("خدماتنا", "Our services"), subtitle: L("كل ما يحتاجه مشروعك من الحفر حتى التسليم — من جهة واحدة.", "Everything your project needs, from excavation to handover — from one partner.") }, style: { background: photoBg("/photos/engineer-inspection.jpg", 76) } }),
-      createBlock("services", { content: { eyebrow: L("", ""), title: L("", ""), subtitle: L("", ""), source: "all", limit: 24, columns: "3", cardStyle: "image", showButton: false }, style: { background: { type: "none" } as any } }),
-      createBlock("buildingTypes", { style: { background: { type: "color", color: "#f4f6fb" } as any } }),
+      createBlock("services", { content: { eyebrow: L("", ""), title: L("", ""), subtitle: L("", ""), source: "all", limit: 24, columns: "3", cardStyle: "image", showDescription: true, showButton: false } }),
+      createBlock("buildingTypes", { style: { background: { type: "color", color: "#f4f6f9" } as any } }),
       createBlock("faq"),
       createBlock("cta"),
     ],
@@ -83,8 +76,7 @@ const pages = [
     title: L("أعمالنا", "Our projects"),
     blocks: () => [
       createBlock("pageHeader", { content: { title: L("أعمالنا السابقة", "Our previous work"), subtitle: L("نماذج من المشاريع التي نفّذناها في مختلف مناطق الكويت.", "A selection of projects we delivered across Kuwait.") }, style: { background: photoBg("/photos/hero-construction-site.jpg", 76) } }),
-      createBlock("projects", { content: { eyebrow: L("", ""), title: L("", ""), subtitle: L("", ""), source: "all", limit: 60, showButton: false } }),
-      createBlock("testimonials", { style: { background: { type: "color", color: "#f4f6fb" } as any } }),
+      createBlock("projects", { content: { eyebrow: L("", ""), title: L("", ""), subtitle: L("", ""), source: "all", limit: 60, showButton: false, showFilters: true, cardStyle: "card", mobileLayout: "stacked" } }),
       createBlock("cta"),
     ],
   },
@@ -94,7 +86,7 @@ const pages = [
     blocks: () => [
       createBlock("pageHeader", { content: { title: L("تواصل معنا", "Contact us"), subtitle: L("اتصل بنا، راسلنا على واتساب، أو زرنا في مكتبنا.", "Call us, message us on WhatsApp, or visit our office.") }, style: { background: photoBg("/photos/kuwait-skyline-sunset.jpg", 78) } }),
       createBlock("contact", { content: { eyebrow: L("", ""), title: L("", ""), showMap: false } }),
-      createBlock("map", { content: { height: 460 } }),
+      createBlock("map", { content: { height: 420 } }),
     ],
   },
 ];
@@ -147,6 +139,12 @@ async function main() {
     for (const f of files) {
       const stat = fs.statSync(path.join(photosDir, f));
       await prisma.media.create({ data: { kind: "image", filename: f, url: `/photos/${f}`, thumbUrl: `/photos/${f}`, mime: "image/jpeg", size: stat.size } });
+    }
+    const videosDir = path.join(process.cwd(), "public", "videos");
+    const videos = fs.existsSync(videosDir) ? fs.readdirSync(videosDir).filter((f) => f.endsWith(".mp4")) : [];
+    for (const f of videos) {
+      const stat = fs.statSync(path.join(videosDir, f));
+      await prisma.media.create({ data: { kind: "video", filename: f, url: `/videos/${f}`, thumbUrl: "/photos/hero-drone-poster.jpg", mime: "video/mp4", size: stat.size } });
     }
     const drawings = ["hero", "about", "generic", ...Array.from({ length: 6 }, (_, i) => `project-${i + 1}`), ...Array.from({ length: 8 }, (_, i) => `service-${i + 1}`)];
     for (const f of drawings) {

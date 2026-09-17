@@ -1,4 +1,5 @@
 "use client";
+import { withBase } from "@/lib/base";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Block, SiteSettings } from "@/lib/types";
@@ -124,7 +125,7 @@ export function SettingsPage({ initial, initialTab, previewBlocks }: { initial: 
               </div>
             </div>
             <div className="mx-auto overflow-hidden rounded-xl bg-white shadow-lg ring-1 ring-black/5" style={{ width: device === "mobile" ? 390 : "100%", height: "calc(100vh - 7rem)" }}>
-              <iframe ref={iframeRef} src="/preview" title="preview" className="h-full w-full" />
+              <iframe ref={iframeRef} src={withBase("/preview")} title="preview" className="h-full w-full" />
             </div>
           </div>
         </div>

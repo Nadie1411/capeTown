@@ -2,6 +2,8 @@ import type { Block, BlockStyle, LText, LinkItem, Locale, ProjectData, ServiceDa
 import { localePath, lt, makeT } from "@/lib/i18n";
 import { cn, isVideoUrl, rgba, telHref, waHref } from "@/lib/utils";
 import { getIcon } from "@/lib/icons";
+import { BgVideo } from "./client/bg-video";
+import { asset } from "@/lib/base";
 import type { CSSProperties, ReactNode } from "react";
 
 export interface RenderContext {
@@ -19,6 +21,8 @@ export interface BlockProps<T = any> {
   content: T;
   style: BlockStyle;
   ctx: RenderContext;
+  /** running sheet number (only for blocks with style.numbered) */
+  index?: number;
 }
 
 /* ------------------------------ links ------------------------------ */
@@ -65,12 +69,12 @@ export function LinkButton({ item, ctx, size = "md", className }: { item: LinkIt
   );
 }
 
-export function Buttons({ buttons, ctx, size = "lg", className }: { buttons?: LinkItem[]; ctx: RenderContext; size?: "sm" | "md" | "lg"; className?: string }) {
+export function Buttons({ buttons, ctx, size = "lg", className, itemClassName }: { buttons?: LinkItem[]; ctx: RenderContext; size?: "sm" | "md" | "lg"; className?: string; itemClassName?: string }) {
   if (!buttons?.length) return null;
   return (
     <div className={cn("flex flex-wrap gap-3", className)}>
       {buttons.map((b, i) => (
-        <LinkButton key={i} item={b} ctx={ctx} size={size} />
+        <LinkButton key={i} item={b} ctx={ctx} size={size} className={itemClassName} />
       ))}
     </div>
   );
@@ -95,15 +99,15 @@ export function SectionHeading({ content, ctx, className, as = "h2" }: { content
 
 /* ------------------------------ media ------------------------------ */
 
-export function MediaView({ url, poster, alt = "", className, imgClassName, autoPlay = true, controls = false, cover = true }: { url: string; poster?: string; alt?: string; className?: string; imgClassName?: string; autoPlay?: boolean; controls?: boolean; cover?: boolean }) {
+export function MediaView({ url, poster, alt = "", className, imgClassName, autoPlay = true, controls = false, cover = true, priority = false }: { url: string; poster?: string; alt?: string; className?: string; imgClassName?: string; autoPlay?: boolean; controls?: boolean; cover?: boolean; priority?: boolean }) {
   if (!url) return null;
   if (isVideoUrl(url)) {
     return (
-      <video className={cn(cover && "h-full w-full object-cover", className)} src={url} poster={poster || undefined} autoPlay={autoPlay} muted={autoPlay} loop={autoPlay} playsInline controls={controls} preload="metadata" />
+      <video className={cn(cover && "h-full w-full object-cover", className)} src={asset(url)} poster={poster ? asset(poster) : undefined} autoPlay={autoPlay} muted={autoPlay} loop={autoPlay} playsInline controls={controls} preload="metadata" />
     );
   }
   // eslint-disable-next-line @next/next/no-img-element
-  return <img src={url} alt={alt} loading="lazy" className={cn(cover && "h-full w-full object-cover", className, imgClassName)} />;
+  return <img src={asset(url)} alt={alt} loading={priority ? "eager" : "lazy"} fetchPriority={priority ? "high" : undefined} decoding="async" className={cn(cover && "h-full w-full object-cover", className, imgClassName)} />;
 }
 
 /* ------------------------------ section wrapper ------------------------------ */
@@ -147,9 +151,9 @@ export function SectionBackground({ style }: { style: BlockStyle }) {
   if (bg.type === "image" && bg.mediaUrl) {
     return (
       <>
-        <div className="sec-bg" style={{ backgroundImage: `url("${bg.mediaUrl}")`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: bg.parallax ? "fixed" : undefined }} aria-hidden="true" />
+        <div className="sec-bg" style={{ backgroundImage: `url("${asset(bg.mediaUrl)}")`, backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: bg.parallax ? "fixed" : undefined }} aria-hidden="true" />
         {bg.overlayColor && bg.overlayOpacity > 0 ? <div className="sec-overlay" style={{ background: overlayCss(bg) }} aria-hidden="true" /> : null}
-        {bg.overlayColor && bg.overlayOpacity > 0 && bg.overlayStyle !== "solid" ? <div className="sec-overlay md:hidden" style={{ background: rgba(bg.overlayColor, (bg.overlayOpacity / 100) * 0.6) }} aria-hidden="true" /> : null}
+        {bg.overlayColor && bg.overlayOpacity > 0 && bg.overlayStyle !== "solid" ? <div className="sec-overlay md:hidden" style={{ background: `linear-gradient(to top, ${rgba(bg.overlayColor, Math.min(1, bg.overlayOpacity / 100 + 0.1))} 0%, ${rgba(bg.overlayColor, (bg.overlayOpacity / 100) * 0.75)} 45%, ${rgba(bg.overlayColor, (bg.overlayOpacity / 100) * 0.25)} 100%)` }} aria-hidden="true" /> : null}
       </>
     );
   }
@@ -157,7 +161,7 @@ export function SectionBackground({ style }: { style: BlockStyle }) {
     return (
       <>
         <div className="sec-bg" aria-hidden="true">
-          <video className="h-full w-full object-cover" src={bg.mediaUrl} poster={bg.posterUrl || undefined} autoPlay muted loop playsInline preload="metadata" />
+          <BgVideo src={asset(bg.mediaUrl)} mobileSrc={bg.mobileVideoUrl ? asset(bg.mobileVideoUrl) : undefined} poster={bg.posterUrl ? asset(bg.posterUrl) : undefined} playOnMobile={bg.videoOnMobile !== false} />
         </div>
         {bg.overlayColor && bg.overlayOpacity > 0 ? <div className="sec-overlay" style={{ background: overlayCss(bg) }} aria-hidden="true" /> : null}
       </>
@@ -169,8 +173,9 @@ export function SectionBackground({ style }: { style: BlockStyle }) {
   return null;
 }
 
-export function Section({ block, style, children, className, tag = "section", noWrap = false }: { block: Block; style: BlockStyle; children: ReactNode; className?: string; tag?: "section" | "div" | "header"; noWrap?: boolean }) {
+export function Section({ block, style, children, className, tag = "section", noWrap = false, index, locale }: { block: Block; style: BlockStyle; children: ReactNode; className?: string; tag?: "section" | "div" | "header"; noWrap?: boolean; index?: number; locale?: Locale }) {
   const Tag = tag;
+  const sideLabel = locale ? lt(style.sideLabel, locale) : "";
   return (
     <Tag
       id={style.anchor || undefined}
@@ -179,10 +184,14 @@ export function Section({ block, style, children, className, tag = "section", no
       data-tone={style.theme}
       data-align={style.align}
       data-reveal={style.animation !== "none" ? style.animation : undefined}
+      data-hairline={style.hairline ? "true" : undefined}
       className={cn("sec", PAD[style.paddingY] || "sec-lg", style.hideOnMobile && "max-md:hidden", style.hideOnDesktop && "md:hidden", style.customClass, className)}
       style={sectionStyle(style)}
     >
       <SectionBackground style={style} />
+      {style.showGrid ? <div className="sheet-lines" aria-hidden="true"><i /><i /><i /></div> : null}
+      {sideLabel ? <div className="vlabel mono hidden xl:block" aria-hidden="true">{sideLabel}</div> : null}
+      {style.numbered && index ? <div className="sheet-no-wrap" aria-hidden="true"><span className="sheet-no mono">{String(index).padStart(2, "0")}</span></div> : null}
       {noWrap ? children : <div className={cn("wrap", WRAP[style.container] || "wrap-default", style.align === "center" && "text-center", style.align === "end" && "text-end")}>{children}</div>}
     </Tag>
   );

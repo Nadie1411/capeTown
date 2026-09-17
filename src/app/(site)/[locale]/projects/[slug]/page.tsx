@@ -1,3 +1,4 @@
+import { asset } from "@/lib/base";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getProjectBySlug, getRenderContext } from "@/lib/content";
@@ -38,16 +39,16 @@ export default async function ProjectPage({ params }: { params: Promise<{ locale
   return (
     <>
       <header className="sec relative flex min-h-[55vh] items-end text-white" data-tone="dark" style={{ background: "var(--c-secondary)" }}>
-        {project.coverUrl ? <div className="sec-bg" style={{ backgroundImage: `url("${project.coverUrl}")`, backgroundSize: "cover", backgroundPosition: "center" }} /> : null}
+        {project.coverUrl ? <div className="sec-bg" style={{ backgroundImage: `url("${asset(project.coverUrl)}")`, backgroundSize: "cover", backgroundPosition: "center" }} /> : null}
         <div className="sec-overlay bg-gradient-to-t from-black/85 via-black/40 to-black/10" />
         <div className="wrap wrap-default py-12">
-          <nav className="mb-3 text-[.95em] text-white/75" aria-label="breadcrumb">
+          <nav className="mono mb-4 text-white/70" aria-label="breadcrumb">
             <a href={localePath(locale, "/")} className="hover:underline">{t(locale, "home")}</a><span className="mx-2">/</span>
             <a href={localePath(locale, "/projects")} className="hover:underline">{t(locale, "ourProjects")}</a><span className="mx-2">/</span>
             <span>{title}</span>
           </nav>
           {cat ? <div className="mb-3"><span className="tag tag-light">{lt(cat.label, locale)}</span></div> : null}
-          <h1 className="text-[clamp(1.9rem,1.3rem+2.4vw,3.2rem)] font-black drop-shadow">{title}</h1>
+          <h1 className="display display-xl drop-shadow">{title}</h1>
           {lt(project.summary, locale) ? <p className="mt-3 max-w-3xl text-[1.1em] text-white/85">{lt(project.summary, locale)}</p> : null}
         </div>
       </header>
@@ -90,7 +91,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ locale
         <section className="sec sec-lg" data-tone="light" style={{ background: "var(--c-surface)" }}>
           <div className="wrap wrap-default">
             <h2 className="sec-title mb-8">{t(locale, "relatedProjects")}</h2>
-            <ProjectsGrid projects={related} categories={settings.projectCategories} locale={locale} columns="3" cardStyle="overlay" showFilters={false} showMeta />
+            <ProjectsGrid projects={related} categories={settings.projectCategories} locale={locale} columns="3" cardStyle="overlay" showFilters={false} showMeta stacked />
           </div>
         </section>
       ) : null}

@@ -1,9 +1,13 @@
 services:
   web:
+    image: capetown-web:${IMAGE_TAG:-latest}
     build: .
     restart: unless-stopped
+    mem_limit: ${WEB_MEM_LIMIT:-768m}
+    memswap_limit: ${WEB_MEM_LIMIT:-768m}
+    cpus: ${WEB_CPUS:-1.0}
     ports:
-      - "3000:3000"
+      - "${WEB_BIND:-0.0.0.0}:${WEB_PORT:-3000}:3000"
     env_file: .env
     environment:
       DATABASE_URL: "file:/app/data/site.db"

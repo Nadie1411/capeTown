@@ -8,7 +8,7 @@ import { SiteHeader } from "@/components/site/header";
 import { SiteFooter } from "@/components/site/footer";
 import { FloatingButtons } from "@/components/site/floating";
 import { RevealObserver } from "@/components/site/reveal";
-import { fontHref, siteFont, themeVars } from "@/lib/theme";
+import { fontHref, pageFonts, themeVars } from "@/lib/theme";
 import { dirOf } from "@/lib/i18n";
 
 interface PreviewState {
@@ -69,7 +69,7 @@ export function PreviewClient({ settings, services, projects }: { settings: Site
       link.rel = "stylesheet";
       document.head.appendChild(link);
     }
-    const href = fontHref(siteFont(state.settings, state.locale));
+    const href = fontHref(...pageFonts(state.settings, state.locale));
     if (link.href !== href) link.href = href;
   }, [state.settings, state.locale]);
 

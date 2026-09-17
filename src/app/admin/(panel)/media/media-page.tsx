@@ -6,6 +6,7 @@ import { Button, Card, Input, Modal, PageHeader, Tabs, api, useConfirm, useToast
 import { MediaGrid, UploadButton, useMedia } from "@/components/admin/media-library";
 import { LTextField } from "@/components/admin/fields";
 import { useT, useAdminLang } from "@/components/admin/i18n";
+import { asset } from "@/lib/base";
 import { Search, Copy, Trash2 } from "lucide-react";
 
 export function MediaPage() {
@@ -63,13 +64,13 @@ export function MediaPage() {
         {active ? (
           <div className="grid gap-5 md:grid-cols-2">
             <div className="flex items-center justify-center overflow-hidden rounded-xl bg-slate-100">
-              {active.kind === "video" ? <video src={active.url} controls className="max-h-80 w-full" /> : // eslint-disable-next-line @next/next/no-img-element
-              <img src={active.url} alt="" className="max-h-80 w-full object-contain" />}
+              {active.kind === "video" ? <video src={asset(active.url)} controls className="max-h-80 w-full" /> : // eslint-disable-next-line @next/next/no-img-element
+              <img src={asset(active.url)} alt="" className="max-h-80 w-full object-contain" />}
             </div>
             <div className="grid content-start gap-3 text-sm">
               <div>
                 <label className="a-label">URL</label>
-                <div className="flex gap-1"><Input readOnly value={typeof window !== "undefined" ? window.location.origin + active.url : active.url} dir="ltr" /><Button size="icon" onClick={() => { navigator.clipboard?.writeText(window.location.origin + active.url); toast(t({ en: "Copied", ar: "تم النسخ" }), "info"); }}><Copy size={14} /></Button></div>
+                <div className="flex gap-1"><Input readOnly value={typeof window !== "undefined" ? window.location.origin + asset(active.url) : asset(active.url)} dir="ltr" /><Button size="icon" onClick={() => { navigator.clipboard?.writeText(window.location.origin + asset(active.url)); toast(t({ en: "Copied", ar: "تم النسخ" }), "info"); }}><Copy size={14} /></Button></div>
               </div>
               <dl className="grid grid-cols-2 gap-1 text-xs text-slate-600">
                 <dt>{t({ en: "Type", ar: "النوع" })}</dt><dd dir="ltr">{active.mime}</dd>

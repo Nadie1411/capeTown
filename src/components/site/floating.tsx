@@ -27,7 +27,7 @@ export function FloatingButtons({ settings, locale }: { settings: SiteSettings; 
     <>
       <div className={cn("fixed bottom-5 z-40 flex flex-col items-center gap-3", side, bar && "max-md:hidden")}>
         {f.whatsapp && wa ? (
-          <a href={waHref(wa, lt(settings.contact.whatsappMessage, locale))} target="_blank" rel="noopener" className="flex h-14 w-14 items-center justify-center rounded-full bg-[#25d366] text-white shadow-lg transition hover:scale-105 [&_svg]:h-7 [&_svg]:w-7" aria-label={t(locale, "whatsapp")}>
+          <a href={waHref(wa, lt(settings.contact.whatsappMessage, locale))} target="_blank" rel="noopener" className="flex h-13 w-13 items-center justify-center rounded-full bg-[#25d366] text-white shadow-lg transition hover:scale-105 [&_svg]:h-6 [&_svg]:w-6" aria-label={t(locale, "whatsapp")}>
             {SOCIAL_ICONS.whatsapp.icon}
           </a>
         ) : null}

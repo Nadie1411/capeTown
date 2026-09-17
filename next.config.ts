@@ -1,7 +1,11 @@
 import type { NextConfig } from "next";
 import path from "node:path";
 
+const basePath = (process.env.NEXT_PUBLIC_BASE_PATH || "").replace(/\/+$/, "");
+
 const nextConfig: NextConfig = {
+  basePath: basePath || undefined,
+  skipTrailingSlashRedirect: true,
   serverExternalPackages: ["sharp", "@prisma/client", "bcryptjs"],
   images: { unoptimized: true },
   poweredByHeader: false,

@@ -1,4 +1,5 @@
 "use client";
+import { withBase } from "@/lib/base";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Block, BlockType, PageData, ProjectData, ServiceData, SiteSettings } from "@/lib/types";
 import { BLOCKS, BLOCK_CATEGORIES, BLOCK_ORDER, STYLE_FIELDS, createBlock } from "@/blocks/registry";
@@ -151,8 +152,8 @@ export function PageEditor({ initialPage, ctx }: { initialPage: PageData; ctx: C
     <div className="flex h-[calc(100vh)] flex-col lg:h-screen">
       {/* toolbar */}
       <div className="flex flex-wrap items-center gap-2 border-b border-slate-200 bg-white px-3 py-2">
-        <a href="/admin" className="flex items-center" title="Admin">{/* eslint-disable-next-line @next/next/no-img-element */}<img src="/brand/mark.svg" alt="" className="h-8 w-8" /></a>
-        <a href="/admin/pages" className="a-btn a-btn-ghost a-btn-sm"><ArrowLeft size={15} className="rtl:hidden" /><ArrowRight size={15} className="ltr:hidden" /> {t({ en: "Pages", ar: "الصفحات" })}</a>
+        <a href={withBase("/admin")} className="flex items-center" title="Admin">{/* eslint-disable-next-line @next/next/no-img-element */}<img src={withBase("/brand/mark.svg")} alt="" className="h-8 w-8" /></a>
+        <a href={withBase("/admin/pages")} className="a-btn a-btn-ghost a-btn-sm"><ArrowLeft size={15} className="rtl:hidden" /><ArrowRight size={15} className="ltr:hidden" /> {t({ en: "Pages", ar: "الصفحات" })}</a>
         <div className="min-w-0">
           <div className="truncate text-sm font-bold text-slate-900">{page.title[adminLang] || page.title.en || page.title.ar}</div>
           <div className="text-[11px] text-slate-500" dir="ltr">/{page.isHome ? "" : page.slug}{!page.published ? ` · ${t({ en: "draft", ar: "مسودة" })}` : ""}</div>
@@ -208,7 +209,7 @@ export function PageEditor({ initialPage, ctx }: { initialPage: PageData; ctx: C
         {/* preview */}
         <div className="a-scroll relative min-w-0 flex-1 overflow-auto bg-slate-200/70 p-4">
           <div className="mx-auto h-full overflow-hidden rounded-xl bg-white shadow-xl ring-1 ring-black/5 transition-[width]" style={{ width: widths[device], maxWidth: "100%" }}>
-            <iframe ref={iframeRef} src="/preview" title="preview" className="h-full w-full" />
+            <iframe ref={iframeRef} src={withBase("/preview")} title="preview" className="h-full w-full" />
           </div>
         </div>
 

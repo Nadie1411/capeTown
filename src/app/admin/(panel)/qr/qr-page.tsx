@@ -4,6 +4,7 @@ import type { LText } from "@/lib/types";
 import { Button, Card, Input, PageHeader, Switch, Tabs } from "@/components/admin/ui";
 import { ColorField } from "@/components/admin/fields";
 import { useT, useAdminLang } from "@/components/admin/i18n";
+import { withBase } from "@/lib/base";
 import { Download, Globe, Contact, Printer, TriangleAlert } from "lucide-react";
 
 export function QrPage({ siteUrl, brandColor, companyName, phone }: { siteUrl: string; brandColor: string; companyName: LText; phone: string }) {
@@ -22,8 +23,8 @@ export function QrPage({ siteUrl, brandColor, companyName, phone }: { siteUrl: s
     if (type === "url") p.set("url", url);
     return p.toString();
   }, [type, url, fg, bg, logo, transparent, size]);
-  const svgSrc = `/api/admin/qr?${query}&format=svg`;
-  const pngSrc = `/api/admin/qr?${query}&format=png`;
+  const svgSrc = withBase(`/api/admin/qr?${query}&format=svg`);
+  const pngSrc = withBase(`/api/admin/qr?${query}&format=png`);
   const localhost = /localhost|127\.0\.0\.1/.test(url) || !url;
 
   const download = (src: string, ext: string) => {

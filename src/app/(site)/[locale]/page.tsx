@@ -3,6 +3,7 @@ import { getHomePage, getRenderContext } from "@/lib/content";
 import { isLocale, lt } from "@/lib/i18n";
 import { PageRenderer } from "@/blocks/render";
 import { EmptyPage } from "@/components/site/empty";
+import { asset } from "@/lib/base";
 
 export const dynamic = "force-dynamic";
 
@@ -13,7 +14,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   if (!page) return {};
   const title = lt(page.seo.title, locale);
   const description = lt(page.seo.description, locale);
-  return { ...(title ? { title: { absolute: title } } : {}), ...(description ? { description } : {}), robots: page.seo.noIndex ? { index: false } : undefined, openGraph: page.seo.ogImageUrl ? { images: [page.seo.ogImageUrl] } : undefined };
+  return { ...(title ? { title: { absolute: title } } : {}), ...(description ? { description } : {}), robots: page.seo.noIndex ? { index: false } : undefined, openGraph: page.seo.ogImageUrl ? { images: [asset(page.seo.ogImageUrl)] } : undefined };
 }
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {

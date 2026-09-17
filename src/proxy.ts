@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { jwtVerify } from "jose";
 
-const DEFAULT_LOCALE = process.env.NEXT_PUBLIC_DEFAULT_LOCALE === "en" ? "en" : "ar";
+const DEFAULT_LOCALE = process.env.NEXT_PUBLIC_DEFAULT_LOCALE === "ar" ? "ar" : "en";
+const BASE = (process.env.NEXT_PUBLIC_BASE_PATH || "").replace(/\/+$/, "");
 const SESSION_COOKIE = "ct_admin";
 const PUBLIC_FILE = /\.[a-zA-Z0-9]+$/;
 
@@ -17,18 +18,27 @@ async function hasValidSession(req: NextRequest) {
   }
 }
 
+/** Absolute URL inside the app (base path included) */
+function appUrl(req: NextRequest, path: string, search = "") {
+  const p = path === "/" && BASE ? BASE : `${BASE}${path}`;
+  return new URL(`${p}${search}`, req.url);
+}
+
 export async function proxy(req: NextRequest) {
-  const { pathname } = req.nextUrl;
+  // Next strips the base path from nextUrl.pathname — except for the bare base URL itself, so normalise here.
+  let pathname = req.nextUrl.pathname;
+  if (BASE && (pathname === BASE || pathname.startsWith(BASE + "/"))) pathname = pathname.slice(BASE.length) || "/";
+  // trailing slashes: canonicalise (Next's own redirect is disabled so a web server that adds slashes cannot loop)
+  if (pathname.length > 1 && pathname.endsWith("/")) {
+    const clean = pathname.replace(/\/+$/, "");
+    if (clean.startsWith("/_next") || clean.startsWith("/api")) pathname = clean;
+    else return NextResponse.redirect(appUrl(req, clean, req.nextUrl.search), 308);
+  }
 
   // ---- admin panel & admin API guard ----
   if (pathname.startsWith("/admin")) {
     if (pathname === "/admin/login") return NextResponse.next();
-    if (!(await hasValidSession(req))) {
-      const url = req.nextUrl.clone();
-      url.pathname = "/admin/login";
-      url.search = `?next=${encodeURIComponent(pathname)}`;
-      return NextResponse.redirect(url);
-    }
+    if (!(await hasValidSession(req))) return NextResponse.redirect(appUrl(req, "/admin/login", `?next=${encodeURIComponent(pathname)}`));
     return NextResponse.next();
   }
   if (pathname.startsWith("/api/admin")) {
@@ -46,20 +56,16 @@ export async function proxy(req: NextRequest) {
     return NextResponse.next();
   }
 
-  // ---- locale handling: default locale has no prefix, others use /en ----
+  // ---- locale handling: default locale has no prefix, the other uses /en or /ar ----
   const seg = pathname.split("/")[1];
   if (seg === DEFAULT_LOCALE) {
-    const url = req.nextUrl.clone();
-    url.pathname = pathname.slice(DEFAULT_LOCALE.length + 1) || "/";
-    return NextResponse.redirect(url, 308);
+    return NextResponse.redirect(appUrl(req, pathname.slice(DEFAULT_LOCALE.length + 1) || "/", req.nextUrl.search), 308);
   }
   if (seg === "ar" || seg === "en") return NextResponse.next();
 
-  const url = req.nextUrl.clone();
-  url.pathname = `/${DEFAULT_LOCALE}${pathname === "/" ? "" : pathname}`;
-  return NextResponse.rewrite(url);
+  return NextResponse.rewrite(appUrl(req, `/${DEFAULT_LOCALE}${pathname === "/" ? "" : pathname}`, req.nextUrl.search));
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image).*)"],
+  matcher: ["/", "/((?!_next/static|_next/image).*)"],
 };

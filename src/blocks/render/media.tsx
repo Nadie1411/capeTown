@@ -1,3 +1,4 @@
+import { asset } from "@/lib/base";
 import { lt, t } from "@/lib/i18n";
 import { cn, youtubeId } from "@/lib/utils";
 import { Section, SectionHeading, type BlockProps } from "./shared";
@@ -22,7 +23,7 @@ export function VideoBlock({ block, content, style, ctx }: BlockProps) {
         {yt ? (
           <iframe className="h-full w-full" src={`https://www.youtube-nocookie.com/embed/${yt}?rel=0${content.autoplay ? "&autoplay=1&mute=1" : ""}${content.loop ? `&loop=1&playlist=${yt}` : ""}`} title={lt(content.title, ctx.locale) || "video"} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen loading="lazy" />
         ) : content.url ? (
-          <video className="h-full w-full" src={content.url} poster={content.posterUrl || undefined} controls={content.controls !== false} autoPlay={!!content.autoplay} muted={!!content.autoplay} loop={!!content.loop} playsInline preload="metadata">
+          <video className="h-full w-full" src={asset(content.url)} poster={content.posterUrl ? asset(content.posterUrl) : undefined} controls={content.controls !== false} autoPlay={!!content.autoplay} muted={!!content.autoplay} loop={!!content.loop} playsInline preload="metadata">
             {t(ctx.locale, "videoNotSupported")}
           </video>
         ) : (
