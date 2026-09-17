@@ -50,7 +50,7 @@ Useful scripts:
 | `npm run placeholders` | regenerate the placeholder artwork in `public/placeholders` |
 | `npm run typecheck` | TypeScript check |
 | `npm run backup` | zips the database + uploads into `backups/` |
-| `npm run reset-password -- <email> <new password>` | reset (or create) an admin login when the password is forgotten |
+| `npm run reset-password -- <email> <new password>` | reset (or create) an admin login when the password is forgotten (on a Docker server: add `ADMIN_FORCE_PASSWORD="true"` to `.env`, restart once, remove the flag) |
 | `npm run photos` | re-download the default stock photos into `public/photos` |
 | `node scripts/snapshot.mjs --url=https://…` | static export (HTML/CSS/JS) of the public site for that URL, zipped into `deploy/` |
 | `node scripts/package-deploy.mjs --url=https://…` | production build for that URL (root or sub-folder) zipped into `deploy/` for upload |
