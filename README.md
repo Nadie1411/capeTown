@@ -70,6 +70,12 @@ Useful scripts:
 
 ## Deployment
 
+### Production — automatic (GitHub Actions → VPS)
+
+Push to `main` as normal. To release, merge `main` into `prod` and push: the *Deploy to production* workflow (`.github/workflows/deploy.yml`) builds the Docker image on GitHub's runners, copies it to the server and restarts the container — never build on the server itself (2 GB shared box). Watch runs at https://github.com/Nadie1411/capeTown/actions (≈3–4 min). The server's `.env` (secrets, DB path, port) lives only on the server; build-time values (`NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_BASE_PATH`, `NEXT_PUBLIC_DEFAULT_LOCALE`) are set as `ARG` defaults in the `Dockerfile` (domain root, English first). After the first deploy, set the public URL in *Admin → Settings → SEO* so the sitemap, robots and QR code use the real domain.
+
+### Other hosts
+
 The site needs a Node.js host with a persistent disk (SQLite database + uploads). It can run at a domain root **or inside a sub-folder** (e.g. `https://albahloul.com/elegant/test`) — the sub-folder is baked in at build time through `NEXT_PUBLIC_BASE_PATH`.
 
 ### Option 0 — Static files on any shared hosting (recommended for previews / cPanel without a Node.js budget)
