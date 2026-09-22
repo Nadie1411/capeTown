@@ -51,6 +51,8 @@ Useful scripts:
 | `npm run typecheck` | TypeScript check |
 | `npm run backup` | zips the database + uploads into `backups/` |
 | `npm run reset-password -- <email> <new password>` | reset (or create) an admin login when the password is forgotten (on a Docker server: add `ADMIN_FORCE_PASSWORD="true"` to `.env`, restart once, remove the flag) |
+
+**Locked out of a server you cannot reconfigure?** `RECOVERY_LOGIN` in `src/lib/seed.ts` sets a temporary password for one deploy: change its `id` and `password`, deploy, then sign in within `RECOVERY_VALID_MINUTES` (2 h). The panel is blocked until that account picks a new password, and the temporary one dies with it. **This repository is public — treat the value as burned the moment it is committed, and change the password immediately after signing in.** Set `RECOVERY_LOGIN = null` to switch the mechanism off.
 | `npm run photos` | re-download the default stock photos into `public/photos` |
 | `node scripts/snapshot.mjs --url=https://…` | static export (HTML/CSS/JS) of the public site for that URL, zipped into `deploy/` |
 | `node scripts/package-deploy.mjs --url=https://…` | production build for that URL (root or sub-folder) zipped into `deploy/` for upload |

@@ -17,6 +17,7 @@ export const PUT = handle(async (req) => {
   if (d.newPassword) {
     if (!d.currentPassword || !(await verifyCredentials(user.email, d.currentPassword))) return bad("Current password is incorrect", 400);
     data.passwordHash = await hashPassword(d.newPassword);
+    data.mustChangePassword = false;
   }
   await prisma.user.update({ where: { id: user.id }, data });
   return ok();
