@@ -41,7 +41,7 @@ export function HeroBlock({ block, content, style, ctx, index }: BlockProps) {
             </ul>
           ) : null}
         </div>
-        {split ? (
+        {split && content.sideMedia ? (
           <div className="plate aspect-[4/3] w-full shadow-2xl lg:aspect-[5/4]">
             <MediaView url={content.sideMedia} alt={title} priority />
           </div>
