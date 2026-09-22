@@ -455,7 +455,7 @@ export const BLOCKS: Record<BlockType, BlockDefinition> = {
         newItem: () => ({ icon: "CircleCheck", text: L("نقطة جديدة", "New point") }),
       },
       ...linkFields,
-      { key: "media", type: "media", accept: "any", label: L("الصورة أو الفيديو", "Image or video") },
+      { key: "media", type: "media", accept: "any", label: L("الصورة أو الفيديو", "Image or video"), help: L("اضغط \"إزالة\" لحذف الصورة — عندها يأخذ النص عرض الصفحة كاملاً", "Press \"Remove\" to delete the image — the text then uses the full width") },
       { key: "mediaPoster", type: "media", accept: "image", label: L("صورة الغلاف للفيديو", "Video poster image"), showIf: (v) => /\.(mp4|webm|mov)$/i.test(v.media || "") },
       {
         key: "mediaPosition",
@@ -481,11 +481,11 @@ export const BLOCKS: Record<BlockType, BlockDefinition> = {
       {
         key: "badge",
         type: "group",
-        label: L("شارة الخبرة (على الصورة)", "Experience badge (on image)"),
+        label: L("شارة الخبرة (20+ سنة)", "Experience badge (20+ years)"),
         fields: [
-          { key: "show", type: "boolean", label: L("إظهار", "Show"), width: "half" },
-          { key: "value", type: "text", label: L("الرقم", "Number"), width: "half" },
-          { key: "label", type: "ltext", label: L("النص", "Label") },
+          { key: "show", type: "boolean", label: L("إظهار الشارة", "Show the badge"), width: "half" },
+          { key: "value", type: "text", label: L("الرقم", "Number"), width: "half", showIf: (v) => v.show },
+          { key: "label", type: "ltext", label: L("النص", "Label"), showIf: (v) => v.show },
         ],
       },
     ],

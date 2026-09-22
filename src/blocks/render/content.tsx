@@ -11,35 +11,65 @@ export function AboutBlock({ block, content, style, ctx, index }: BlockProps) {
   const { locale } = ctx;
   const mediaFirst = content.mediaPosition !== "end";
   const body = lt(content.body, locale);
+  const hasMedia = !!content.media;          // clear the image in the admin → the text uses the full width
+  const showBadge = !!content.badge?.show;   // and the badge still works, inline
+  const badgeValue = content.badge?.value;
+  const badgeLabel = lt(content.badge?.label, locale);
+
+  const text = (
+    <div className={cn(hasMedia ? "lg:col-span-6" : "max-w-3xl", hasMedia && (mediaFirst ? "lg:order-2" : "lg:order-1"))}>
+      {showBadge && !hasMedia ? (
+        <div className="mb-6 inline-flex items-baseline gap-3 rounded-[var(--radius)] bg-[var(--c-primary)] px-5 py-3 text-white">
+          <span className="display display-md" dir="ltr">{badgeValue}</span>
+          <span className="text-sm opacity-90">{badgeLabel}</span>
+        </div>
+      ) : null}
+      <SectionHeading content={content} ctx={ctx} className="mb-5" />
+      {body ? <div className="rich text-[1.03em]" dangerouslySetInnerHTML={{ __html: body }} /> : null}
+      {content.bullets?.length ? (
+        <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+          {content.bullets.map((b: any, i: number) => (
+            <li key={i} className="flex items-start gap-3">
+              <span className="mt-0.5 flex-none text-[var(--c-accent)]"><Icon name={b.icon || "CircleCheck"} size={22} /></span>
+              <span className="font-medium">{lt(b.text, locale)}</span>
+            </li>
+          ))}
+        </ul>
+      ) : null}
+      <Buttons buttons={content.buttons} ctx={ctx} size="md" className="mt-8" />
+    </div>
+  );
+
+  if (!hasMedia) {
+    return (
+      <Section block={block} style={style} index={index} locale={locale}>
+        {text}
+      </Section>
+    );
+  }
+
   return (
     <Section block={block} style={style} index={index} locale={locale}>
       <div className="grid gap-8 lg:grid-cols-12 lg:items-center lg:gap-16">
         <div className={cn("relative lg:col-span-6", mediaFirst ? "lg:order-1" : "lg:order-2")}>
-          <div className="plate aspect-[4/3] lg:aspect-[4/5]" data-reveal="clip">
+          <div
+            className={cn(
+              "plate aspect-[4/3] lg:aspect-[4/5]",
+              content.mediaStyle === "plain" && "!rounded-none",
+              content.mediaStyle === "framed" && "ring-1 ring-[var(--c-accent)] ring-offset-4 ring-offset-[var(--c-bg)]"
+            )}
+            data-reveal="clip"
+          >
             <MediaView url={content.media} poster={content.mediaPoster} alt={lt(content.title, locale)} />
           </div>
-          {content.badge?.show ? (
+          {showBadge ? (
             <div className="absolute -bottom-5 end-5 rounded-[var(--radius)] bg-[var(--c-primary)] px-5 py-3 text-white shadow-lg">
-              <div className="display display-md" dir="ltr">{content.badge.value}</div>
-              <div className="mt-0.5 text-sm opacity-90">{lt(content.badge.label, locale)}</div>
+              <div className="display display-md" dir="ltr">{badgeValue}</div>
+              <div className="mt-0.5 text-sm opacity-90">{badgeLabel}</div>
             </div>
           ) : null}
         </div>
-        <div className={cn("lg:col-span-6", mediaFirst ? "lg:order-2" : "lg:order-1")}>
-          <SectionHeading content={content} ctx={ctx} className="mb-5" />
-          {body ? <div className="rich text-[1.03em]" dangerouslySetInnerHTML={{ __html: body }} /> : null}
-          {content.bullets?.length ? (
-            <ul className="mt-6 grid gap-3 sm:grid-cols-2">
-              {content.bullets.map((b: any, i: number) => (
-                <li key={i} className="flex items-start gap-3">
-                  <span className="mt-0.5 flex-none text-[var(--c-accent)]"><Icon name={b.icon || "CircleCheck"} size={22} /></span>
-                  <span className="font-medium">{lt(b.text, locale)}</span>
-                </li>
-              ))}
-            </ul>
-          ) : null}
-          <Buttons buttons={content.buttons} ctx={ctx} size="md" className="mt-8" />
-        </div>
+        {text}
       </div>
     </Section>
   );
