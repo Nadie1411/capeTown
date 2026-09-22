@@ -17,6 +17,13 @@ import { L, safeJson } from "./utils";
 /** Bump whenever the default design/content below changes. */
 export const CONTENT_VERSION = "2026-09-17.1";
 
+/** One-time recovery login for servers whose .env cannot be changed.
+ *  Applied by exactly one deploy (tracked by `id`), valid for RECOVERY_VALID_MINUTES after that deploy, and the
+ *  account must set a new password before it can use the panel. This repository is public, so the window is short —
+ *  to get a new one, change `id` (and ideally `password`) and deploy again. Set to null to disable. */
+export const RECOVERY_VALID_MINUTES = 120;
+export const RECOVERY_LOGIN: { id: string; email: string; password: string } | null = { id: "2026-09-17-a", email: "admin@capetown-kw.com", password: "CT-kv3Y3sxCdE2hLM" };
+
 const services = [
   { slug: "construction", icon: "HardHat", cover: "/photos/service-construction.jpg", title: L("أعمال البناء", "Construction works"), summary: L("تنفيذ الهيكل الإنشائي كاملاً من الأساسات حتى السقف الأخير بأعلى معايير الجودة والسلامة.", "Complete structural execution from foundations to the last slab, to the highest quality and safety standards."), body: L("<p>ننفّذ جميع أعمال البناء للمباني السكنية والفلل والعمارات والمباني التجارية والحكومية: الأساسات، الأعمدة، الأسقف، الجدران، وأعمال الطابوق، وفق المخططات المعتمدة ومواصفات بلدية الكويت.</p><ul><li>فريق هندسي مشرف على الموقع طوال فترة التنفيذ</li><li>مواد بناء معتمدة وفحوصات دورية للخرسانة</li><li>جدول زمني واضح ومتابعة أسبوعية مع العميل</li></ul>", "<p>We execute all construction works for residential buildings, villas, apartment blocks, commercial and government buildings: foundations, columns, slabs, walls and blockwork, according to approved drawings and Kuwait Municipality specifications.</p><ul><li>Site engineers supervising throughout execution</li><li>Certified materials and periodic concrete testing</li><li>Clear schedule with weekly client updates</li></ul>") },
   { slug: "excavation", icon: "Shovel", cover: "/photos/service-excavation.jpg", title: L("أعمال الحفر", "Excavation"), summary: L("حفر وتسوية ونقل الأتربة وتجهيز الموقع للأساسات بمعدات حديثة.", "Excavation, levelling, soil removal and site preparation with modern equipment."), body: L("<p>نجهّز الموقع للبناء: حفر الأساسات والسراديب، تسوية الأرض، نقل الأتربة، دك التربة، وأعمال الدعم والتخفيض تحت إشراف هندسي.</p>", "<p>We prepare the site for construction: foundation and basement excavation, levelling, soil removal, compaction and shoring works under engineering supervision.</p>") },
@@ -122,6 +129,14 @@ export async function seedDatabase(prisma: PrismaClient, opts: { reset?: ResetSc
     log("• pages & settings reset");
   }
 
+  // ---- settings ----
+  const siteUrl = opts.siteUrl ?? process.env.NEXT_PUBLIC_SITE_URL ?? "";
+  const existing = await prisma.setting.findUnique({ where: { id: "site" } });
+  const existingData = safeJson<any>(existing?.data, {});
+  const meta = existingData._meta || {};
+  let recoveryApplied: string | undefined = meta.recoveryApplied;
+  let recoveryExpires: string | undefined = meta.recoveryExpires;
+
   // ---- admin user ----
   const adminEmail = (opts.adminEmail || process.env.ADMIN_EMAIL || "admin@example.com").toLowerCase();
   const adminPassword = opts.adminPassword || process.env.ADMIN_PASSWORD || "ChangeMe123!";
@@ -129,19 +144,22 @@ export async function seedDatabase(prisma: PrismaClient, opts: { reset?: ResetSc
     await prisma.user.create({ data: { email: adminEmail, name: "Admin", passwordHash: await bcrypt.hash(adminPassword, 10) } });
     result.admin = adminEmail;
     log(`• admin user created: ${adminEmail}`);
-  } else if (process.env.ADMIN_FORCE_PASSWORD === "true") {
+  }
+  if (RECOVERY_LOGIN && meta.recoveryApplied !== RECOVERY_LOGIN.id) {
+    const hash = await bcrypt.hash(RECOVERY_LOGIN.password, 10);
+    await prisma.user.upsert({ where: { email: RECOVERY_LOGIN.email }, update: { passwordHash: hash, mustChangePassword: true }, create: { email: RECOVERY_LOGIN.email, name: "Admin", passwordHash: hash, mustChangePassword: true } });
+    recoveryApplied = RECOVERY_LOGIN.id;
+    recoveryExpires = new Date(Date.now() + RECOVERY_VALID_MINUTES * 60_000).toISOString();
+    log(`• one-time recovery login applied for ${RECOVERY_LOGIN.email} — valid for ${RECOVERY_VALID_MINUTES} minutes, must set a new password at first login`);
+  }
+  if (process.env.ADMIN_FORCE_PASSWORD === "true") {
     // ops escape hatch: set ADMIN_FORCE_PASSWORD=true in the server .env, restart, then remove it again
     await prisma.user.upsert({ where: { email: adminEmail }, update: { passwordHash: await bcrypt.hash(adminPassword, 10) }, create: { email: adminEmail, name: "Admin", passwordHash: await bcrypt.hash(adminPassword, 10) } });
     result.admin = adminEmail;
     log(`• admin password reset from .env for ${adminEmail} (ADMIN_FORCE_PASSWORD) — remove the flag now`);
   }
 
-  // ---- settings ----
-  const siteUrl = opts.siteUrl ?? process.env.NEXT_PUBLIC_SITE_URL ?? "";
-  const existing = await prisma.setting.findUnique({ where: { id: "site" } });
-  const existingData = safeJson<any>(existing?.data, {});
-  const meta = existingData._meta || {};
-  const freshSettings = () => ({ ...DEFAULT_SETTINGS, seo: { ...DEFAULT_SETTINGS.seo, siteUrl: existingData?.seo?.siteUrl || siteUrl }, _meta: { seedVersion: CONTENT_VERSION, edited: false } });
+  const freshSettings = () => ({ ...DEFAULT_SETTINGS, seo: { ...DEFAULT_SETTINGS.seo, siteUrl: existingData?.seo?.siteUrl || siteUrl }, _meta: { seedVersion: CONTENT_VERSION, edited: false, recoveryApplied, recoveryExpires } });
   // a new CONTENT_VERSION refreshes everything that was never edited — settings and pages independently
   const refreshDefaults = !existing || meta.seedVersion !== CONTENT_VERSION;
   if (!existing) {
@@ -152,9 +170,9 @@ export async function seedDatabase(prisma: PrismaClient, opts: { reset?: ResetSc
     await prisma.setting.update({ where: { id: "site" }, data: { data: JSON.stringify(freshSettings()) } });
     result.settings = "refreshed";
     log("• settings refreshed to the latest defaults (never edited)");
-  } else if (refreshDefaults) {
-    // keep the admin's settings, just record that this content version has been applied
-    await prisma.setting.update({ where: { id: "site" }, data: { data: JSON.stringify({ ...existingData, _meta: { ...meta, seedVersion: CONTENT_VERSION } }) } });
+  } else if (refreshDefaults || recoveryApplied !== meta.recoveryApplied || recoveryExpires !== meta.recoveryExpires) {
+    // keep the admin's settings, just record that this content version / recovery login has been applied
+    await prisma.setting.update({ where: { id: "site" }, data: { data: JSON.stringify({ ...existingData, _meta: { ...meta, seedVersion: CONTENT_VERSION, recoveryApplied, recoveryExpires } }) } });
   }
 
   // ---- services / projects (only filled when empty, or on a full reset) ----
