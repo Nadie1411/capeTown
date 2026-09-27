@@ -18,7 +18,12 @@ jobs:
       # took the whole box offline. Build the image here instead, where
       # resources are plentiful, and ship the finished image to the server.
       - name: Build image
-        run: docker build -t capetown-web:${{ github.sha }} .
+        # NEXT_PUBLIC_* values are baked into the build, not read at runtime.
+        run: |
+          docker build \
+            --build-arg NEXT_PUBLIC_SITE_URL=https://capetown.com.kw \
+            --build-arg NEXT_PUBLIC_DEFAULT_LOCALE=en \
+            -t capetown-web:${{ github.sha }} .
 
       - name: Save image to archive
         run: docker save capetown-web:${{ github.sha }} | gzip > image.tar.gz
