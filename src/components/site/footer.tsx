@@ -1,7 +1,7 @@
 import { asset } from "@/lib/base";
 import type { Locale, ServiceData, SiteSettings } from "@/lib/types";
 import { localePath, lt, t } from "@/lib/i18n";
-import { cn, telHref, waHref } from "@/lib/utils";
+import { cn, embedSrc, telHref, waHref } from "@/lib/utils";
 import { SocialLinks } from "./social-icons";
 
 export function SiteFooter({ settings, locale, services }: { settings: SiteSettings; locale: Locale; services: ServiceData[] }) {
@@ -63,9 +63,9 @@ export function SiteFooter({ settings, locale, services }: { settings: SiteSetti
             </div>
           ) : null}
         </div>
-        {f.showMap && c.mapEmbedUrl ? (
+        {f.showMap && embedSrc(c.mapEmbedUrl) ? (
           <div className="mt-12 overflow-hidden border border-[var(--line-cur)]">
-            <iframe src={c.mapEmbedUrl} className="h-64 w-full" loading="lazy" title="map" referrerPolicy="no-referrer-when-downgrade" />
+            <iframe src={embedSrc(c.mapEmbedUrl)}className="h-64 w-full" loading="lazy" title="map" referrerPolicy="no-referrer-when-downgrade" />
           </div>
         ) : null}
         <div className="mt-12 flex flex-col gap-3 border-t border-[var(--line-cur)] py-5 text-[.85rem] opacity-70 md:flex-row md:items-center md:justify-between">
