@@ -15,7 +15,7 @@ import { createBlock } from "@/blocks/registry";
 import { L, safeJson } from "./utils";
 
 /** Bump whenever the default design/content below changes. */
-export const CONTENT_VERSION = "2026-10-01.1";
+export const CONTENT_VERSION = "2026-10-01.2";
 
 /** One-time recovery login for servers whose .env cannot be changed.
  *  Applied by exactly one deploy (tracked by `id`), valid for RECOVERY_VALID_MINUTES after that deploy, and the
