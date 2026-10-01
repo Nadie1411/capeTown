@@ -97,6 +97,14 @@ export function youtubeId(url: string) {
   return m ? m[1] : null;
 }
 
+/** Accepts a bare embed URL or a whole pasted `<iframe src="…">` snippet and returns just the https URL ("" if none). */
+export function embedSrc(input: string | undefined | null) {
+  const raw = (input || "").trim();
+  const m = raw.match(/src\s*=\s*["']([^"']+)["']/i);
+  const url = (m ? m[1] : raw).replace(/&amp;/g, "&").trim();
+  return /^https:\/\//i.test(url) ? url : "";
+}
+
 export function stripHtml(html: string) {
   return (html || "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
 }

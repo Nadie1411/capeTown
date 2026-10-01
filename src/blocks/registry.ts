@@ -410,7 +410,7 @@ export const BLOCKS: Record<BlockType, BlockDefinition> = {
     defaultStyle: {
       theme: "dark",
       paddingY: "xl",
-      background: { type: "video", color: "#17205c", gradientFrom: "#233283", gradientTo: "#0f172a", gradientAngle: 135, mediaUrl: "/videos/hero-drone-720.mp4", mobileVideoUrl: "/videos/hero-drone-480.mp4", videoOnMobile: true, posterUrl: "/photos/hero-drone-poster.jpg", overlayColor: "#0a1030", overlayOpacity: 82, overlayStyle: "fade-start", parallax: false, pattern: "grid" },
+      background: { type: "video", color: "#17205c", gradientFrom: "#233283", gradientTo: "#0f172a", gradientAngle: 135, mediaUrl: "/videos/hero-720.mp4", mobileVideoUrl: "/videos/hero-480.mp4", videoOnMobile: true, posterUrl: "/photos/hero-poster.jpg", overlayColor: "#0a1030", overlayOpacity: 82, overlayStyle: "fade-start", parallax: false, pattern: "grid" },
     },
   },
 

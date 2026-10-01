@@ -1,5 +1,5 @@
 import { lt, t } from "@/lib/i18n";
-import { cn, telHref, waHref } from "@/lib/utils";
+import { cn, embedSrc, telHref, waHref } from "@/lib/utils";
 import { Section, SectionHeading, type BlockProps } from "./shared";
 import { ContactForm } from "./client/contact-form";
 import { SocialLinks } from "@/components/site/social-icons";
@@ -71,9 +71,9 @@ export function ContactBlock({ block, content, style, ctx }: BlockProps) {
           </div>
         ) : null}
       </div>
-      {content.showMap && settings.contact.mapEmbedUrl ? (
+      {content.showMap && embedSrc(settings.contact.mapEmbedUrl) ? (
         <div className="mt-10 overflow-hidden rounded-[var(--radius)] border border-[var(--card-border)]">
-          <iframe src={settings.contact.mapEmbedUrl} className="h-[380px] w-full" loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="map" allowFullScreen />
+          <iframe src={embedSrc(settings.contact.mapEmbedUrl)}className="h-[380px] w-full" loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="map" allowFullScreen />
           {settings.contact.mapLink ? (
             <a href={settings.contact.mapLink} target="_blank" rel="noopener" className="flex items-center justify-center gap-2 bg-[var(--card-bg)] py-3 font-bold text-[var(--c-primary)] hover:underline">
               <ExternalLink size={18} /> {t(locale, "openMap")}
@@ -86,7 +86,7 @@ export function ContactBlock({ block, content, style, ctx }: BlockProps) {
 }
 
 export function MapBlock({ block, content, style, ctx }: BlockProps) {
-  const url = content.embedUrl || ctx.settings.contact.mapEmbedUrl;
+  const url = embedSrc(content.embedUrl) || embedSrc(ctx.settings.contact.mapEmbedUrl);
   if (!url) return null;
   return (
     <Section block={block} style={style} noWrap={style.container === "full"}>
