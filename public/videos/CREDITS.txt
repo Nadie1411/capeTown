@@ -1,4 +1,4 @@
 hero-drone-720.mp4 / hero-drone-480.mp4 — trimmed and re-encoded from https://www.pexels.com/video/28692137/ (Pexels License — free to use, no attribution required).
 Poster frame: public/photos/hero-drone-poster.jpg (same source).
 
-hero-720.mp4 / hero-480.mp4 — the company's own footage (IMG_1054.MP4), re-encoded to H.264 for the web. Poster: public/photos/hero-poster.jpg
+hero-1062-720.mp4 / hero-1062-480.mp4 — the company's own footage (IMG_1062.MP4), re-encoded to H.264 for the web. Poster: public/photos/hero-1062-poster.jpg
