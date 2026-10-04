@@ -15,7 +15,7 @@ import { createBlock } from "@/blocks/registry";
 import { L, safeJson } from "./utils";
 
 /** Bump whenever the default design/content below changes. */
-export const CONTENT_VERSION = "2026-10-01.2";
+export const CONTENT_VERSION = "2026-10-04.1";
 
 /** One-time recovery login for servers whose .env cannot be changed.
  *  Applied by exactly one deploy (tracked by `id`), valid for RECOVERY_VALID_MINUTES after that deploy, and the
@@ -78,7 +78,7 @@ const pages = [
     title: L("خدماتنا", "Our services"),
     blocks: () => [
       createBlock("pageHeader", { content: { title: L("خدماتنا", "Our services"), subtitle: L("كل ما يحتاجه مشروعك من الحفر حتى التسليم — من جهة واحدة.", "Everything your project needs, from excavation to handover — from one partner.") }, style: { background: photoBg("/photos/engineer-inspection.jpg", 76) } }),
-      createBlock("services", { content: { eyebrow: L("", ""), title: L("", ""), subtitle: L("", ""), source: "all", limit: 24, columns: "3", cardStyle: "image", showDescription: true, showButton: false } }),
+      createBlock("services", { content: { eyebrow: L("", ""), title: L("", ""), subtitle: L("", ""), source: "all", limit: 24, columns: "3", cardStyle: "icon", showDescription: true, showButton: false } }),
       createBlock("buildingTypes", { style: { background: { type: "color", color: "#f4f6f9" } as any } }),
       createBlock("faq"),
       createBlock("cta"),
