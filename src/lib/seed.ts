@@ -214,7 +214,7 @@ export async function seedDatabase(prisma: PrismaClient, opts: { reset?: ResetSc
   const add = async (data: any) => { if (known.has(data.url)) return; await prisma.media.create({ data }); known.add(data.url); result.media++; };
   const listDir = (dir: string, ext: RegExp) => (fs.existsSync(path.join(pub, dir)) ? fs.readdirSync(path.join(pub, dir)).filter((f) => ext.test(f)) : []);
   for (const f of listDir("photos", /\.jpe?g$/i)) await add({ kind: "image", filename: f, url: `/photos/${f}`, thumbUrl: `/photos/${f}`, mime: "image/jpeg", size: fs.statSync(path.join(pub, "photos", f)).size });
-  for (const f of listDir("videos", /\.mp4$/i)) await add({ kind: "video", filename: f, url: `/videos/${f}`, thumbUrl: "/photos/hero-drone-poster.jpg", mime: "video/mp4", size: fs.statSync(path.join(pub, "videos", f)).size });
+  for (const f of listDir("videos", /\.mp4$/i)) await add({ kind: "video", filename: f, url: `/videos/${f}`, thumbUrl: fs.existsSync(path.join(pub, "photos", f.replace(/\.mp4$/i, "-poster.jpg"))) ? `/photos/${f.replace(/\.mp4$/i, "-poster.jpg")}` : "/photos/hero-drone-poster.jpg", mime: "video/mp4", size: fs.statSync(path.join(pub, "videos", f)).size });
   for (const f of listDir("placeholders", /\.svg$/i)) await add({ kind: "image", filename: `drawing-${f}`, url: `/placeholders/${f}`, thumbUrl: `/placeholders/${f}`, mime: "image/svg+xml", size: 0, width: 1600, height: 1000 });
   if (result.media) log(`• ${result.media} media files registered`);
 

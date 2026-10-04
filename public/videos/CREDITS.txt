@@ -2,3 +2,5 @@ hero-drone-720.mp4 / hero-drone-480.mp4 — trimmed and re-encoded from https://
 Poster frame: public/photos/hero-drone-poster.jpg (same source).
 
 hero-1062-720.mp4 / hero-1062-480.mp4 — the company's own footage (IMG_1062.MP4), re-encoded to H.264 for the web. Poster: public/photos/hero-1062-poster.jpg
+
+project-residential-tower.mp4 (IMG_1049), project-villa.mp4 (IMG_1112), project-commercial-complex.mp4 (IMG_1075) — the company's own footage, re-encoded to H.264. Posters: public/photos/project-*-poster.jpg
