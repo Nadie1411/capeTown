@@ -3,7 +3,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getProjectBySlug, getRenderContext } from "@/lib/content";
 import { isLocale, localePath, lt, t } from "@/lib/i18n";
-import { stripHtml, telHref, waHref } from "@/lib/utils";
+import { isVideoUrl, stripHtml, telHref, waHref } from "@/lib/utils";
+import { BgVideo } from "@/blocks/render/client/bg-video";
 import { GalleryGrid } from "@/blocks/render/client/lightbox";
 import { ProjectsGrid } from "@/blocks/render/client/projects-grid";
 import { Calendar, MapPin, MessageCircle, Phone, Tag, User } from "lucide-react";
@@ -25,6 +26,8 @@ export default async function ProjectPage({ params }: { params: Promise<{ locale
   if (!project) notFound();
   const { settings, projects } = ctx;
   const title = lt(project.title, locale);
+  // the first video in the gallery plays as the banner background (the cover photo is its poster)
+  const heroVideo = project.gallery.find((g) => isVideoUrl(g.url))?.url;
   const cat = settings.projectCategories.find((c) => c.key === project.category);
   const phone = settings.contact.phones[0]?.number;
   const media = [project.coverUrl ? { url: project.coverUrl, caption: title } : null, ...project.gallery.map((g) => ({ url: g.url, caption: lt(g.caption, locale) }))].filter(Boolean) as { url: string; caption: string }[];
@@ -39,7 +42,9 @@ export default async function ProjectPage({ params }: { params: Promise<{ locale
   return (
     <>
       <header className="sec relative flex min-h-[55vh] items-end text-white" data-tone="dark" style={{ background: "var(--c-secondary)" }}>
-        {project.coverUrl ? <div className="sec-bg" style={{ backgroundImage: `url("${asset(project.coverUrl)}")`, backgroundSize: "cover", backgroundPosition: "center" }} /> : null}
+        {heroVideo ? (
+          <div className="sec-bg"><BgVideo src={asset(heroVideo)} poster={project.coverUrl ? asset(project.coverUrl) : undefined} playOnMobile /></div>
+        ) : project.coverUrl ? <div className="sec-bg" style={{ backgroundImage: `url("${asset(project.coverUrl)}")`, backgroundSize: "cover", backgroundPosition: "center" }} /> : null}
         <div className="sec-overlay bg-gradient-to-t from-black/85 via-black/40 to-black/10" />
         <div className="wrap wrap-default py-12">
           <nav className="mono mb-4 text-white/70" aria-label="breadcrumb">

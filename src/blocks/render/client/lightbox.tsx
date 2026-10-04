@@ -75,7 +75,7 @@ export function GalleryGrid({ items, columns, aspect, lightbox }: { items: Light
           <figure key={i} className="group overflow-hidden rounded-[var(--radius)] border border-[var(--card-border)] bg-black/5">
             <button type="button" className={cn("block w-full", ratio, lightbox ? "cursor-zoom-in" : "cursor-default")} onClick={() => lightbox && setIdx(i)} aria-label={it.caption || "Open"}>
               {isVideoUrl(it.url) ? (
-                <video src={asset(it.url)} poster={it.posterUrl ? asset(it.posterUrl) : undefined} muted playsInline preload="metadata" className="h-full w-full object-cover" />
+                <video src={asset(it.url)} poster={it.posterUrl ? asset(it.posterUrl) : undefined} autoPlay loop muted playsInline preload="auto" className="h-full w-full object-cover" />
               ) : (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={asset(it.url)} alt={it.caption || ""} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
