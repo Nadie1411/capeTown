@@ -558,7 +558,7 @@ export const BLOCKS: Record<BlockType, BlockDefinition> = {
       limit: 8,
       selected: [],
       columns: "4",
-      cardStyle: "overlay",
+      cardStyle: "icon",
       showDescription: false,
       showButton: true,
       buttonLabel: L("جميع الخدمات", "All services"),
