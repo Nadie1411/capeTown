@@ -10,6 +10,7 @@ export const dynamic = "force-dynamic";
 export async function GET(req: NextRequest, ctx: { params: Promise<{ path: string[] }> }) {
   const { path: parts } = await ctx.params;
   const rel = parts.map(decodeURIComponent).join("/");
+  if (rel.split("/").some((s) => s.startsWith("."))) return new Response("Not found", { status: 404 }); // e.g. the .tmp folder of unfinished uploads
   const file = resolveUploadPath(rel);
   if (!file) return new Response("Not found", { status: 404 });
   let stat: fs.Stats;

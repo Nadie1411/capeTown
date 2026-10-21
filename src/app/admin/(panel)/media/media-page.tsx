@@ -4,6 +4,7 @@ import type { MediaData } from "@/lib/types";
 import { formatBytes, formatDate } from "@/lib/utils";
 import { Button, Card, Input, Modal, PageHeader, Tabs, api, useConfirm, useToast } from "@/components/admin/ui";
 import { MediaGrid, UploadButton, useMedia } from "@/components/admin/media-library";
+import { useUpload } from "@/components/admin/upload";
 import { LTextField } from "@/components/admin/fields";
 import { useT, useAdminLang } from "@/components/admin/i18n";
 import { asset } from "@/lib/base";
@@ -32,19 +33,11 @@ export function MediaPage() {
     setItems((s) => s.map((x) => (x.id === active.id ? active : x)));
     toast(t({ en: "Saved", ar: "تم الحفظ" }));
   };
-  const onDrop = async (e: React.DragEvent) => {
+  const { upload } = useUpload((m) => setItems((s) => [...m, ...s]));
+  const onDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setDrag(false);
-    const fd = new FormData();
-    Array.from(e.dataTransfer.files).forEach((f) => fd.append("files", f));
-    if (!e.dataTransfer.files.length) return;
-    try {
-      const d = await api<{ media: MediaData[] }>("/api/admin/media", { method: "POST", body: fd });
-      setItems((s) => [...d.media, ...s]);
-      toast(t({ en: "Uploaded", ar: "تم الرفع" }));
-    } catch (err: any) {
-      toast(err.message, "error");
-    }
+    upload(Array.from(e.dataTransfer.files));
   };
 
   return (

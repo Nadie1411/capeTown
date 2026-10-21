@@ -14,7 +14,7 @@ Bilingual (English / العربية) marketing website for **Cape Town General T
 **Admin panel** (`/admin`)
 - **Pages & layout** — page builder with 23 section types (hero, services, projects, why-us, stats, steps, testimonials, FAQ, gallery, video, map, contact form, CTA, team, partners, rich text, custom HTML, …). Drag to reorder, click a section in the live preview to edit it, switch desktop/tablet/mobile and EN/AR preview. Each section has a **Content** tab and a **Design** tab (background colour / gradient / image / video with overlay, text & heading colours, spacing, width, alignment, animation, hide on mobile/desktop, anchor id…).
 - **Services** and **Projects** — bilingual title, description, rich text, cover image, photo/video gallery, icon, building type, featured/published, drag ordering.
-- **Media library** — drag-and-drop upload of images (auto-optimised + thumbnails), videos (MP4/WebM) and PDFs.
+- **Media library** — drag-and-drop upload of images (auto-optimised + thumbnails), videos (MP4/WebM/MOV, up to 200 MB) and PDFs, with a progress bar showing the MB sent. Files travel in small pieces (4 MB, stepping down to 768/256 KB if a proxy answers `413`), so no `client_max_body_size` / request-size change is needed on the server; unfinished uploads are kept in `storage/uploads/.tmp` and discarded after 6 hours.
 - **Messages** — contact-form inbox with unread badge, call/WhatsApp shortcuts, CSV export.
 - **Site settings** with live preview — brand & colours, fonts (English/Arabic), logo, header & menu, footer, floating buttons, contact details & map, social links, SEO, languages, project types, tracking codes.
 - **QR code** — website QR (or vCard contact QR) with the logo in the middle, brand colours, SVG/PNG download for the business card.
