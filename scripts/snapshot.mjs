@@ -64,7 +64,7 @@ try {
   fs.cpSync(path.join(root, "public"), out, { recursive: true });
   fs.cpSync(path.join(root, ".next", "static"), path.join(out, "_next", "static"), { recursive: true });
   const uploads = path.join(root, "storage", "uploads");
-  if (fs.existsSync(uploads)) fs.cpSync(uploads, path.join(out, "uploads"), { recursive: true, filter: (s) => !s.endsWith(".gitkeep") });
+  if (fs.existsSync(uploads)) fs.cpSync(uploads, path.join(out, "uploads"), { recursive: true, filter: (s) => !s.endsWith(".gitkeep") && !s.includes(`${path.sep}.tmp`) });
 
   // clean URLs + caching for Apache/LiteSpeed
   fs.writeFileSync(path.join(out, ".htaccess"), `# Static export of the Cape Town website

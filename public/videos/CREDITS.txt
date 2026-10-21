@@ -4,3 +4,5 @@ Poster frame: public/photos/hero-drone-poster.jpg (same source).
 hero-1062-720.mp4 / hero-1062-480.mp4 — the company's own footage (IMG_1062.MP4), re-encoded to H.264 for the web. Poster: public/photos/hero-1062-poster.jpg
 
 project-residential-tower.mp4 (IMG_1049), project-villa.mp4 (IMG_1112), project-commercial-complex.mp4 (IMG_1075) — the company's own footage, re-encoded to H.264. Posters: public/photos/project-*-poster.jpg
+
+project-building-aerial.mp4 (IMG_1400) — the company's own drone footage (three stacked shots, 14 s), re-encoded from 4K 60 fps HEVC (107 MB) to H.264 720x1280 / 30 fps, ~4.4 Mbps, original AAC audio. Poster: public/photos/project-building-aerial-poster.jpg (frame at 2 s)

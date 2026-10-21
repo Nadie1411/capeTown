@@ -4,6 +4,7 @@ import type { MediaData } from "@/lib/types";
 import { cn, formatBytes, isVideoUrl } from "@/lib/utils";
 import { Button, Input, Modal, Tabs, api, useToast, useConfirm } from "./ui";
 import { useT } from "./i18n";
+import { useUpload } from "./upload";
 import { asset, withBase } from "@/lib/base";
 import { Upload, Trash2, Search, Link2, Film, ImageIcon, Copy, LoaderCircle } from "lucide-react";
 
@@ -28,28 +29,11 @@ export function useMedia(kind: "image" | "video" | "any" = "any") {
 
 export function UploadButton({ onUploaded, accept, className, label }: { onUploaded: (m: MediaData[]) => void; accept?: string; className?: string; label?: string }) {
   const t = useT();
-  const toast = useToast();
   const ref = useRef<HTMLInputElement>(null);
-  const [busy, setBusy] = useState(false);
-  const upload = async (files: FileList | null) => {
-    if (!files?.length) return;
-    setBusy(true);
-    try {
-      const fd = new FormData();
-      Array.from(files).forEach((f) => fd.append("files", f));
-      const d = await api<{ media: MediaData[] }>("/api/admin/media", { method: "POST", body: fd });
-      onUploaded(d.media);
-      toast(t({ en: `${d.media.length} file(s) uploaded`, ar: `تم رفع ${d.media.length} ملف` }));
-    } catch (e: any) {
-      toast(e.message, "error");
-    } finally {
-      setBusy(false);
-      if (ref.current) ref.current.value = "";
-    }
-  };
+  const { upload, busy } = useUpload(onUploaded);
   return (
     <>
-      <input ref={ref} type="file" multiple hidden accept={accept || "image/*,video/mp4,video/webm,video/quicktime,application/pdf"} onChange={(e) => upload(e.target.files)} />
+      <input ref={ref} type="file" multiple hidden accept={accept || "image/*,video/mp4,video/webm,video/quicktime,application/pdf"} onChange={(e) => { const files = Array.from(e.target.files || []); e.target.value = ""; upload(files); }} />
       <Button variant="primary" className={className} loading={busy} onClick={() => ref.current?.click()}>
         <Upload size={16} /> {label || t({ en: "Upload", ar: "رفع ملفات" })}
       </Button>
@@ -91,20 +75,11 @@ export function MediaLibraryModal({ open, onClose, onSelect, accept = "any" }: {
   const [tab, setTab] = useState<"library" | "url">("library");
   const [url, setUrl] = useState("");
   const [drag, setDrag] = useState(false);
-  const toast = useToast();
-  const onDrop = async (e: React.DragEvent) => {
+  const { upload } = useUpload((m) => setItems((s) => [...m, ...s]));
+  const onDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setDrag(false);
-    const files = e.dataTransfer.files;
-    if (!files.length) return;
-    const fd = new FormData();
-    Array.from(files).forEach((f) => fd.append("files", f));
-    try {
-      const d = await api<{ media: MediaData[] }>("/api/admin/media", { method: "POST", body: fd });
-      setItems((s) => [...d.media, ...s]);
-    } catch (err: any) {
-      toast(err.message, "error");
-    }
+    upload(Array.from(e.dataTransfer.files));
   };
   const acceptAttr = accept === "image" ? "image/*" : accept === "video" ? "video/mp4,video/webm,video/quicktime" : undefined;
   return (

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useT, useAdminLang, setAdminLang } from "./i18n";
+import { UploadProgressCard } from "./upload";
 import { LayoutDashboard, FileText, Hammer, Building2, Images, Inbox, Settings, QrCode, UserRound, LogOut, ExternalLink, Menu, X, Languages } from "lucide-react";
 
 const NAV = [
@@ -82,6 +83,7 @@ export function AdminShell({ user, unread, children }: { user: { name: string; e
         </header>
         <main className={cn("min-w-0 flex-1", isEditor ? "" : "p-4 md:p-6 lg:p-8")}>{children}</main>
       </div>
+      <UploadProgressCard />
     </div>
   );
 }
