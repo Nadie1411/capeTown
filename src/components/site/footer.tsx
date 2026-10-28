@@ -76,6 +76,12 @@ export function SiteFooter({ settings, locale, services }: { settings: SiteSetti
             ))}
           </div>
         </div>
+        <div dir="ltr" className="pb-5 text-center text-[11px] leading-none opacity-70">
+          Powered by{" "}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="https://bluecodekw.com/uploads/favicon-custom.png" width={5} height={5} alt="" aria-hidden="true" loading="lazy" className="mx-1 inline-block h-[5px] w-[5px] align-middle" />
+          <a href="https://wa.me/96550894216" target="_blank" rel="noopener noreferrer" className="hover:opacity-70">bluecodekw.com</a> 2026
+        </div>
       </div>
     </footer>
   );
